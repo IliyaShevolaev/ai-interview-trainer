@@ -16,6 +16,7 @@ Route::get('/test', [ApiController::class, 'index']);
 Route::group(['prefix' => 'auth'], function () {
     Route::post('/register', [RegisterController::class, 'store']);
     Route::post('/login', [LoginController::class, 'login']);
+    Route::post('/logout', [LoginController::class, 'logout']);
 });
 
 Route::post('/ask', [AskController::class, 'ask']);

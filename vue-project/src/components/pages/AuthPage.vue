@@ -62,6 +62,7 @@ export default {
 
                 this.$axios.post(endpoint, data).then(res => {
                     if (res.status == 200) {
+                        localStorage.setItem('auth', 'true');
                         this.$router.push({name: 'profile'});
                     }
                 });
