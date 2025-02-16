@@ -1,10 +1,11 @@
 <template>
     <div>
-        <h1>Hello</h1>
-        <p>{{ this.speech }}</p>
+        <p>{{ this.answer }}</p>
         <textarea v-model="speech"></textarea>
-        <button @click.prevent="startRecognition" type="button" class="btn btn-primary">Say</button>
-        <button @click.prevent="userTest" type="button" class="btn btn-primary">User</button>
+        <div>
+            <button @click.prevent="startRecognition" type="button" class="btn btn-primary">Say</button>
+            <button @click.prevent="ask" type="button" class="btn btn-primary">Ask</button>
+        </div>
 
     </div>
 </template>
@@ -13,6 +14,7 @@ export default {
     data() {
         return {
             speech: "",
+            answer: "",
         };
     },
 
@@ -34,9 +36,11 @@ export default {
             };
         },
 
-        userTest() {
-            this.$axios.get('/api/user').then(res => {
-                    console.log(res);
+        ask() {
+            this.$axios.post('/api/ask', {
+                prompt: this.speech,
+            }).then(res => {
+                    this.answer = res.data.answer;
                 });
         },
     },
