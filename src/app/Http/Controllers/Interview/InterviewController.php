@@ -6,12 +6,17 @@ use App\Actions\Interview\StoreInterviewAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Interview\CreateRequest;
 use App\Models\Interview\Interview;
-use App\Models\Interview\Question;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
-class CreateInterviewController extends Controller
+class InterviewController extends Controller
 {
+    public function index(Interview $interview)
+    {
+        return response()->json([
+            'title' => $interview->title,
+            'questions' => $interview->questions,
+        ]);
+    }
+
     public function store(CreateRequest $createRequest, StoreInterviewAction $storeInterviewAction)
     {
         $data = $createRequest->validated();
