@@ -1,7 +1,7 @@
 import AuthPage from "@/components/pages/AuthPage.vue";
 import CreateInterviewPage from "@/components/pages/CreateInterviewPage.vue";
 import HomePage from "@/components/pages/HomePage.vue";
-import InterviewFindWindow from "@/components/pages/InterviewFindWindow.vue";
+import InterviewPage from "@/components/pages/InterviewPage.vue";
 import ProfilePage from "@/components/pages/ProfilePage.vue";
 
 const routes = [
@@ -30,9 +30,9 @@ const routes = [
     },
 
     {
-        path: '/interview/find/:token',
+        path: '/interview/:token',
         name: 'interview.start',
-        component: InterviewFindWindow,
+        component: InterviewPage,
         props: true
     },
 ];
