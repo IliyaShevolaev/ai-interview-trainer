@@ -4,6 +4,7 @@ use App\Http\Controllers\API\ApiController;
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegisterController;
 use App\Http\Controllers\Interview\AskController;
+use App\Http\Controllers\Interview\CreateInterviewController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,7 @@ Route::group(['prefix' => 'auth'], function () {
 });
 
 Route::post('/ask', [AskController::class, 'ask']);
+
+Route::group(['prefix' => 'interview'], function() {
+    Route::post('/store', [CreateInterviewController::class, 'store'])->middleware('auth:sanctum');
+});

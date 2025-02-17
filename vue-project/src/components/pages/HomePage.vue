@@ -1,7 +1,7 @@
 <template>
     <div class="page">
-        <div class="container">
-            <div class="card">
+        <div class="main-container">
+            <div class="main-card">
                 <p>{{ this.answer }}</p>
                 <textarea v-model="speech" class="form-control" rows="4"></textarea>
                 <div class="btn-container">
@@ -49,35 +49,6 @@ export default {
 };
 </script>
 <style scoped>
-.page {
-    background-color: #121212;
-    color: #ffffff;
-    font-family: 'Arial', sans-serif;
-}
-
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    flex-direction: column;
-}
-
-.card {
-    background-color: #1f1f1f;
-    border: none;
-    padding: 30px;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 600px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-.card p {
-    font-size: 18px;
-    color: #e0e0e0;
-}
-
 .form-control {
     background-color: #333;
     border: 1px solid #444;
@@ -88,7 +59,7 @@ export default {
 
 .form-control:focus {
     background-color: #444;
-    border-color: #007bff;
+    border-color: #ffffff;
     color: #fff;
     box-shadow: none;
 }

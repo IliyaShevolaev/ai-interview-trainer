@@ -11,6 +11,9 @@
                     <router-link to="/" class="nav-link" active-class="active">Home</router-link>
                 </li>
                 <li class="nav-item">
+                    <router-link to="/interview/create" class="nav-link" active-class="active">Create interview</router-link>
+                </li>
+                <li class="nav-item">
                     <router-link to="/profile" class="nav-link" active-class="active">Profile</router-link>
                 </li>
             </ul>

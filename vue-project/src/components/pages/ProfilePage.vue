@@ -1,8 +1,12 @@
 <template>
-    <div>
-        <p>name: {{ this.user.name }}</p>
-        <p>email: {{ this.user.email }}</p>
-        <button @click.prevent="logout" type="button" class="btn btn-danger">Log out</button>
+    <div class="page">
+        <div class="main-container">
+            <div class="main-card">
+                <p>name: {{ this.user.name }}</p>
+                <p>email: {{ this.user.email }}</p>
+                <button @click.prevent="logout" type="button" class="btn btn-danger">Log out</button>
+            </div>
+        </div>
     </div>
 </template>
 <script>
@@ -29,7 +33,7 @@ export default {
             if (localStorage.getItem('auth') === 'true') {
                 this.$axios.post('/api/auth/logout').then(() => {
                     localStorage.removeItem('auth');
-                    this.$router.push({name: 'auth'});
+                    this.$router.push({ name: 'auth' });
                 });
             }
         },
@@ -37,5 +41,11 @@ export default {
 }
 </script>
 <style>
-    
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    flex-direction: column;
+}
 </style>
