@@ -30,7 +30,7 @@ const routes = [
     },
 
     {
-        path: '/interview/find/:id',
+        path: '/interview/find/:token',
         name: 'interview.start',
         component: InterviewFindWindow,
         props: true

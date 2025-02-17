@@ -16,6 +16,7 @@ return new class extends Migration
 
             $table->string('title');
             $table->integer('user_id')->constrained('users', 'id')->onDelete('cascade');;
+            $table->string('token')->unique();
 
             $table->timestamps();
         });

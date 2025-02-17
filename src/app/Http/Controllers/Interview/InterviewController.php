@@ -24,9 +24,9 @@ class InterviewController extends Controller
         if ($createRequest->hasFile('questions_file')) {
             $data['questions_file']  = $createRequest->file('questions_file');
 
-            $storeInterviewAction->handle($data);
+            $interview = $storeInterviewAction->handle($data);
 
-            return response()->json(['success' => true], 200);
+            return response()->json(['token' => $interview->token], 200);
         }
     }
 }

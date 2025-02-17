@@ -2,6 +2,7 @@
 
 namespace App\Actions\Interview;
 
+use Illuminate\Support\Str;
 use App\Models\Interview\Question;
 use App\Models\Interview\Interview;
 use Illuminate\Support\Facades\Auth;
@@ -17,6 +18,7 @@ class StoreInterviewAction
             $interview = Interview::create([
                 'title' =>  $data['title'],
                 'user_id' => Auth::id(),
+                'token' => Str::random(12),
             ]);
 
             $questionsData = [];
@@ -31,6 +33,8 @@ class StoreInterviewAction
             }
 
             Question::insert($questionsData);
+
+            return $interview;
         }
     }
 }

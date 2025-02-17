@@ -12,6 +12,8 @@
             </div>
             <button @click.prevent="create" type="submit" class="btn btn-primary">Create</button>
         </form>
+
+        <p v-if="interviewToken">You interview token: {{ this.interviewToken }}</p>
     </div>
 </template>
 <script>
@@ -20,6 +22,7 @@ export default {
         return {
             name: null,
             questionsFile: null,
+            interviewToken: null
         }
     },
 
@@ -34,6 +37,7 @@ export default {
             formData.append("questions_file", this.questionsFile);
 
             this.$axios.post("/api/interview/store", formData).then(res => {
+                this.interviewToken = res.data.token;
                 console.log(res);
             })
         }

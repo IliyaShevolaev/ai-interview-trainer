@@ -6,6 +6,7 @@ use App\Http\Controllers\API\ApiController;
 use App\Http\Controllers\Interview\AskController;
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegisterController;
+use App\Http\Controllers\API\Tools\RetokennaizeController;
 use App\Http\Controllers\Interview\InterviewController;
 
 Route::get('/user', function (Request $request) {
@@ -26,3 +27,5 @@ Route::group(['prefix' => 'interview'], function() {
     Route::get('/get/{interview}', [InterviewController::class, 'index']);
     Route::post('/store', [InterviewController::class, 'store'])->middleware('auth:sanctum');
 });
+
+Route::get('/retokenaize-token/{token}', RetokennaizeController::class);
