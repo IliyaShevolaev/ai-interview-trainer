@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers\Interview;
 
-use App\Actions\Interview\RateInterviewAnswer;
+use App\Actions\Interview\RateInterviewAnswerAction;
 use App\Actions\Interview\StoreInterviewAction;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Interview\CreateRequest;
+use App\Http\Requests\Interview\FinishRequest;
 use App\Http\Requests\Interview\RateRequest;
 use App\Models\Interview\Interview;
 use App\Services\Openrouter\OpenrouterService;
+use Illuminate\Support\Facades\Log;
 
 class InterviewController extends Controller
 {
@@ -34,14 +36,24 @@ class InterviewController extends Controller
         }
     }
 
-    public function rate(RateRequest $rateRequest, RateInterviewAnswer $rateInterviewAnswer, OpenrouterService $openrouterService)
+    public function rate(RateRequest $rateRequest, RateInterviewAnswerAction $rateInterviewAnswerAction, OpenrouterService $openrouterService)
     {
         $data = $rateRequest->validated();
 
-        $aiRate = $rateInterviewAnswer->handle($openrouterService, $data);
+        $aiRate = $rateInterviewAnswerAction->handle($openrouterService, $data);
 
         return response()->json([
             'rate' => $aiRate,
         ]);
+    }
+
+    public function finish(FinishRequest $finishRequest) 
+    {
+        $data = $finishRequest->validated();
+
+        Log::info('jsones');
+        Log::info($data);
+
+        return response()->json($data);
     }
 }

@@ -27,6 +27,7 @@ Route::group(['prefix' => 'interview'], function() {
     Route::get('/get/{interview}', [InterviewController::class, 'index']);
     Route::post('/store', [InterviewController::class, 'store'])->middleware('auth:sanctum');
     Route::post('/rate-answer', [InterviewController::class, 'rate']);
+    Route::post('/finish', [InterviewController::class, 'finish']);
 });
 
 Route::get('/retokenaize-token/{token}', RetokennaizeController::class);

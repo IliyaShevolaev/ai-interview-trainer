@@ -13,13 +13,26 @@
         <div v-else class="main-container">
             <div class="main-card">
                 <p>{{ this.questions[this.questionId]['text'] }}</p>
-                <textarea v-model="answer" class="form-control" rows="4"></textarea>
+                <textarea v-if="!this.userAnswers[this.questionId]" v-model="answer" class="form-control" rows="4"></textarea>
+                <textarea v-else class="form-control" disabled rows="4">{{ this.userAnswers[this.questionId] }}</textarea>
                 <div class="btn-speech-container">
-                    <button @click.prevent="startRecognition" type="button" class="btn btn-outline-light">Start recording</button>
-                    <button @click.prevent="startRecognition(false)" type="button" class="btn btn-outline-light">Add record</button>
-                    <button @click.prevent="sendAnswer" type="button" class="btn btn-outline-light">Send answer</button>
+                    <button @click.prevent="startRecognition" type="button" class="btn btn-outline-light">Start
+                        recording</button>
+                    <button @click.prevent="startRecognition(false)" type="button" class="btn btn-outline-light">Add
+                        record</button>
+                    <button @click.prevent="sendAnswer" v-if="!this.userAnswers[this.questionId]" type="button"
+                        class="btn btn-outline-light">Send answer</button>
                 </div>
-                <p class="mt-3" v-if="aiRate">{{ this.aiRate }}</p>
+                <p class="mt-3" v-if="this.aiRates[this.questionId]">{{ this.aiRates[this.questionId] }}</p>
+            </div>
+
+            <div class="nav-buttons">
+                <button @click="prevQuestion" class="btn-arrow">←</button>
+                <button @click="nextQuestion" class="btn-arrow">→</button>
+            </div>
+
+            <div class="finish-button">
+                <button @click="finishInterview" v-if="this.userAnswers.length == this.questions.length" class="btn btn-outline-danger">Закончить собеседование</button>
             </div>
         </div>
     </div>
@@ -40,7 +53,8 @@ export default {
             questionId: 0,
 
             answer: "Say something",
-            aiRate: null,
+            userAnswers: [],
+            aiRates: [],
         }
     },
 
@@ -91,7 +105,31 @@ export default {
                 question: this.questions[this.questionId]['text'],
                 answer: this.answer,
             }).then(res => {
-                this.aiRate = res.data.rate;
+                this.aiRates[this.questionId] = res.data.rate;
+                this.userAnswers[this.questionId] = this.answer
+                console.log(this.userAnswers);
+                console.log(this.aiRates);
+            });
+        },
+
+        nextQuestion() {
+            if (this.questionId < this.questions.length - 1) {
+                this.questionId++;
+                this.answer = "Say something";
+            }
+        },
+
+        prevQuestion() {
+            if (this.questionId > 0) {
+                this.questionId--;
+            }
+        }, 
+
+        finishInterview() {
+            this.$axios.post('/api/interview/finish', {
+                answers: this.userAnswers,
+                rates: this.aiRates,
+            }).then(res => {
                 console.log(res);
             });
         },
@@ -114,8 +152,43 @@ export default {
     box-shadow: none;
 }
 
+.form-control:disabled {
+    background-color: #444;
+    border-color: #ffffff;
+    color: #fff;
+    box-shadow: none;
+}
+
 .btn-speech-container {
     display: flex;
     justify-content: space-around;
+}
+
+.nav-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    gap: 20px;
+}
+
+.btn-arrow {
+    background-color: #333;
+    border: 1px solid #555;
+    color: #fff;
+    font-size: 24px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.btn-arrow:hover {
+    background-color: #555;
+}
+
+.finish-button {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
 }
 </style>
