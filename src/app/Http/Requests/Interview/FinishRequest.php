@@ -24,6 +24,8 @@ class FinishRequest extends FormRequest
         return [
             'answers' => 'required|array',
             'rates' => 'required|array',
+            'questions' => 'required|array',
+            'interview_id' => 'required|integer',
         ];
     }
 }

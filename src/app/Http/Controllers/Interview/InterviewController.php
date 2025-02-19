@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Interview;
 
+use App\Actions\Interview\FinishInterviewAction;
 use App\Actions\Interview\RateInterviewAnswerAction;
 use App\Actions\Interview\StoreInterviewAction;
 use App\Http\Controllers\Controller;
@@ -32,7 +33,9 @@ class InterviewController extends Controller
 
             $interview = $storeInterviewAction->handle($data);
 
-            return response()->json(['token' => $interview->token], 200);
+            return response()->json([
+                'token' => $interview->token
+            ], 200);
         }
     }
 
@@ -44,16 +47,17 @@ class InterviewController extends Controller
 
         return response()->json([
             'rate' => $aiRate,
-        ]);
+        ], 200);
     }
 
-    public function finish(FinishRequest $finishRequest) 
+    public function finish(FinishRequest $finishRequest, FinishInterviewAction $finishInterviewAction) 
     {
         $data = $finishRequest->validated();
 
-        Log::info('jsones');
-        Log::info($data);
+        $avgRate = $finishInterviewAction->handle($data);
 
-        return response()->json($data);
+        return response()->json([
+            'rate' => $avgRate
+        ], 200);
     }
 }

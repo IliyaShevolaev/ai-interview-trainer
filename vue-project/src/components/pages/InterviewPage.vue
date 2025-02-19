@@ -32,7 +32,8 @@
             </div>
 
             <div class="finish-button">
-                <button @click="finishInterview" v-if="this.userAnswers.length == this.questions.length" class="btn btn-outline-danger">Закончить собеседование</button>
+                <button @click="finishInterview" v-if="this.userAnswers.length == this.questions.length && !this.interviewFinished" class="btn btn-outline-danger">Закончить собеседование</button>
+                <p v-if="this.interviewFinished" class="text-success mt-3">Собеседование завершено с рейтингом {{ this.finalRate }}/10 Ваши данные успешно отправлены создателю.</p>
             </div>
         </div>
     </div>
@@ -50,11 +51,14 @@ export default {
             questions: null,
 
             inProcess: false,
+            interviewFinished: false,
             questionId: 0,
 
             answer: "Say something",
             userAnswers: [],
             aiRates: [],
+
+            finalRate: 0,
         }
     },
 
@@ -129,8 +133,11 @@ export default {
             this.$axios.post('/api/interview/finish', {
                 answers: this.userAnswers,
                 rates: this.aiRates,
+                questions: this.questions,
+                interview_id: this.interviewId,
             }).then(res => {
-                console.log(res);
+                this.finalRate = res.data.rate;
+                this.interviewFinished = true;
             });
         },
     },
