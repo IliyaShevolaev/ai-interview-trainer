@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('rate');
             $table->integer('user_id')->constrained('users', 'id')->onDelete('cascade');
             $table->integer('question_id')->constrained('questions', 'id')->onDelete('cascade');
+            $table->integer('interview_result_id')->constrained('interview_results', 'id')->onDelete('cascade');
 
             $table->timestamps();
         });

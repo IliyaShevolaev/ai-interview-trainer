@@ -30,29 +30,35 @@ class FinishInterviewAction
 
         $avgRate = (int)(array_sum($parsedRates) / count($parsedRates));
 
-        $answersData = [];
         $createdTime = now();
-        for($i = 0; $i < count($answers); $i++) {
-            array_push($answersData, [
-                'answer' => $answers[$i], 
-                'rate' => in_array(-1, $parsedRates) ? $avgRate : $parsedRates[$i], 
-                'user_id' => Auth::id(), //unregistred fix 
-                'question_id' => $questions[$i]['id'],  
-                'created_at' => $createdTime,
-                'updated_at' => $createdTime,
-            ]);
-        }
 
-        Answer::insert($answersData);
-
-        InterviewResult::create([
+        $interviewResult = InterviewResult::create([
             'rate' => $avgRate,
             'interview_id' => $data['interview_id'],
             'user_id' => Auth::id(),
             'created_at' => $createdTime,
             'updated_at' => $createdTime,
         ]);
-        
+
+        if ($interviewResult) {
+            $answersData = [];
+            for ($i = 0; $i < count($answers); $i++) {
+                array_push($answersData, [
+                    'answer' => $answers[$i],
+                    'rate' => in_array(-1, $parsedRates) ? $avgRate : $parsedRates[$i],
+                    'user_id' => Auth::id(), //unregistred fix 
+                    'question_id' => $questions[$i]['id'],
+                    'interview_result_id' => $interviewResult->id,
+                    'created_at' => $createdTime,
+                    'updated_at' => $createdTime,
+                ]);
+            }
+
+            Answer::insert($answersData);
+        } else {
+            return -1;
+        }
+
         return $avgRate;
     }
 }

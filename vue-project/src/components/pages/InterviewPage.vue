@@ -13,7 +13,7 @@
         <div v-else class="main-container">
             <div class="main-card">
                 <p>{{ this.questions[this.questionId]['text'] }}</p>
-                <textarea v-if="!this.userAnswers[this.questionId]" v-model="answer" class="form-control" rows="4"></textarea>
+                <textarea v-if="!this.userAnswers[this.questionId]" v-model="answer" placeholder="Say something..." class="form-control" rows="4"></textarea>
                 <textarea v-else class="form-control" disabled rows="4">{{ this.userAnswers[this.questionId] }}</textarea>
                 <div class="btn-speech-container">
                     <button @click.prevent="startRecognition" type="button" class="btn btn-outline-light">Start
@@ -54,7 +54,7 @@ export default {
             interviewFinished: false,
             questionId: 0,
 
-            answer: "Say something",
+            answer: "",
             userAnswers: [],
             aiRates: [],
 
@@ -119,7 +119,7 @@ export default {
         nextQuestion() {
             if (this.questionId < this.questions.length - 1) {
                 this.questionId++;
-                this.answer = "Say something";
+                this.answer = "";
             }
         },
 
@@ -164,6 +164,11 @@ export default {
     border-color: #ffffff;
     color: #fff;
     box-shadow: none;
+}
+
+.form-control::placeholder {
+  color: rgb(255, 255, 255); 
+  opacity: 1; 
 }
 
 .btn-speech-container {
