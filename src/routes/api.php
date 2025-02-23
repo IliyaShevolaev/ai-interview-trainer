@@ -35,6 +35,7 @@ Route::group(['prefix' => 'interview'], function() {
 
 Route::group(['prefix' => 'profile', 'middleware' => 'auth:sanctum'], function() {
     Route::get('/my-results', [UserRatesController::class, 'index']);
+    Route::get('/rate/{interviewResult}', [UserRatesController::class, 'get']);
 });
 
 Route::get('/retokenaize-token/{token}', RetokennaizeController::class);

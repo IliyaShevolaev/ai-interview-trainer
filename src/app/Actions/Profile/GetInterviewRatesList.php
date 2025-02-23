@@ -4,7 +4,7 @@ namespace App\Actions\Profile;
 
 use App\Models\User;
 
-class getInterviewRates
+class GetInterviewRatesList
 {
     public function handle(User $user)
     {
@@ -16,6 +16,7 @@ class getInterviewRates
             $interview = $interviewsResult->interview;
 
             array_push($result, [
+                'id' => $interviewsResult->id,
                 'title' => $interview->title,
                 'rate' => $interviewsResult->rate,
                 'timeEnded' => $interviewsResult->created_at,

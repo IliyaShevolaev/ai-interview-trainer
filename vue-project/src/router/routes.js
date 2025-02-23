@@ -4,6 +4,7 @@ import HomePage from "@/components/pages/HomePage.vue";
 import InterviewPage from "@/components/pages/InterviewPage.vue";
 import InterviewRatesPage from "@/components/pages/InterviewRatesPage.vue";
 import ProfilePage from "@/components/pages/ProfilePage.vue";
+import ViewInterviewRatePage from "@/components/pages/ViewInterviewRatePage.vue";
 
 const routes = [
     {
@@ -41,6 +42,13 @@ const routes = [
         path: '/profile/rates',
         name: 'profile.rates',
         component: InterviewRatesPage,
+    },
+
+    {
+        path: '/profile/rate/:id',
+        name: 'profile.rate',
+        component: ViewInterviewRatePage,
+        props: true
     },
 ];
 
