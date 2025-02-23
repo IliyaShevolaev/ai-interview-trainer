@@ -30,12 +30,15 @@ class FinishInterviewAction
 
         $avgRate = (int)(array_sum($parsedRates) / count($parsedRates));
 
+        $userId = Auth::id();
+        $userId = $userId ? $userId : -1;
+
         $createdTime = now();
 
         $interviewResult = InterviewResult::create([
             'rate' => $avgRate,
             'interview_id' => $data['interview_id'],
-            'user_id' => Auth::id(),
+            'user_id' => $userId,
             'created_at' => $createdTime,
             'updated_at' => $createdTime,
         ]);
@@ -46,7 +49,7 @@ class FinishInterviewAction
                 array_push($answersData, [
                     'answer' => $answers[$i],
                     'rate' => in_array(-1, $parsedRates) ? $avgRate : $parsedRates[$i],
-                    'user_id' => Auth::id(), //unregistred fix 
+                    'user_id' => $userId, 
                     'question_id' => $questions[$i]['id'],
                     'interview_result_id' => $interviewResult->id,
                     'created_at' => $createdTime,
