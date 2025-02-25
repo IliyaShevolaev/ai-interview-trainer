@@ -61,7 +61,7 @@ export default {
                 const data = this.isLoginMode ? { email: this.userData.email, password: this.userData.password } : this.userData;
 
                 this.$axios.post(endpoint, data).then(res => {
-                    if (res.status == 200) {
+                    if (res.status == 200 || res.status == 201) {
                         console.log(res);
                         localStorage.setItem('auth', 'true');
                         this.$router.push({name: 'profile'});
