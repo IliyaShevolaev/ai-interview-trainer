@@ -40,6 +40,7 @@ Route::group(['prefix' => 'profile', 'middleware' => 'auth:sanctum'], function()
     Route::get('/rate/{interviewResult}', [UserRatesController::class, 'get']);
     Route::get('/interviews-manage', [InterviewManageController::class, 'index']);
     Route::get('/interviews-manage/results/{interview}', [InterviewManageResultController::class, 'index']);
+    Route::get('/interviews-manage/user-answers/{interviewResult}', [InterviewManageResultController::class, 'get']);
 });
 
 Route::get('/retokenaize-token/{token}', RetokennaizeController::class);

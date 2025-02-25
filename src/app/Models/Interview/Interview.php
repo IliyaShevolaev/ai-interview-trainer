@@ -12,4 +12,9 @@ class Interview extends Model
     {
         return $this->hasMany(Question::class, 'interview_id', 'id');
     }
+
+    public function interviewResults()
+    {
+        return $this->hasMany(InterviewResult::class, 'interview_id', 'id');
+    }
 }

@@ -7,6 +7,7 @@ import ProfilePage from "@/components/pages/profile/ProfilePage.vue";
 import ViewInterviewRatePage from "@/components/pages/profile/ViewInterviewRatePage.vue";
 import InterviewsManagePage from "@/components/pages/profile/InterviewsManagePage.vue";
 import InterviewResultsPage from "@/components/pages/profile/InterviewResultsPage.vue";
+import ViewUserAnswers from "@/components/pages/profile/ViewUserAnswers.vue";
 
 const routes = [
     {
@@ -63,6 +64,13 @@ const routes = [
         path: '/profile/rate/:id',
         name: 'profile.rate',
         component: ViewInterviewRatePage,
+        props: true
+    },
+
+    {
+        path: '/profile/view-user-results/:id',
+        name: 'profile.interview.manage.answers',
+        component: ViewUserAnswers,
         props: true
     },
 ];
