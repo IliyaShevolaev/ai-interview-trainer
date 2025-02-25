@@ -1,10 +1,12 @@
 import AuthPage from "@/components/pages/AuthPage.vue";
-import CreateInterviewPage from "@/components/pages/CreateInterviewPage.vue";
+import CreateInterviewPage from "@/components/pages/Interview/CreateInterviewPage.vue";
 import HomePage from "@/components/pages/HomePage.vue";
-import InterviewPage from "@/components/pages/InterviewPage.vue";
-import InterviewRatesPage from "@/components/pages/InterviewRatesPage.vue";
-import ProfilePage from "@/components/pages/ProfilePage.vue";
-import ViewInterviewRatePage from "@/components/pages/ViewInterviewRatePage.vue";
+import InterviewPage from "@/components/pages/Interview/InterviewPage.vue";
+import InterviewRatesPage from "@/components/pages/profile/InterviewRatesPage.vue";
+import ProfilePage from "@/components/pages/profile/ProfilePage.vue";
+import ViewInterviewRatePage from "@/components/pages/profile/ViewInterviewRatePage.vue";
+import InterviewsManagePage from "@/components/pages/profile/InterviewsManagePage.vue";
+import InterviewResultsPage from "@/components/pages/profile/InterviewResultsPage.vue";
 
 const routes = [
     {
@@ -42,6 +44,19 @@ const routes = [
         path: '/profile/rates',
         name: 'profile.rates',
         component: InterviewRatesPage,
+    },
+
+    {
+        path: '/profile/interview-manage',
+        name: 'profile.interview.manage',
+        component: InterviewsManagePage,
+    },
+
+    {
+        path: '/profile/interview-manage/result/:token',
+        name: 'profile.interview.manage.result',
+        component: InterviewResultsPage,
+        props: true
     },
 
     {

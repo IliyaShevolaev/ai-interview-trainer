@@ -15,7 +15,7 @@
 </template>
 
 <script>
-import RegisterRequire from '../UI/RegisterRequire.vue';
+import RegisterRequire from '../../UI/RegisterRequire.vue';
 
 export default {
     props: {

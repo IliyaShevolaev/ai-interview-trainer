@@ -7,6 +7,8 @@ use App\Http\Controllers\Interview\AskController;
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegisterController;
 use App\Http\Controllers\API\Auth\CheckAuthController;
+use App\Http\Controllers\API\Profile\InterviewManageController;
+use App\Http\Controllers\API\Profile\InterviewManageResultController;
 use App\Http\Controllers\Interview\InterviewController;
 use App\Http\Controllers\API\Profile\UserRatesController;
 use App\Http\Controllers\API\Tools\RetokennaizeController;
@@ -36,6 +38,8 @@ Route::group(['prefix' => 'interview'], function() {
 Route::group(['prefix' => 'profile', 'middleware' => 'auth:sanctum'], function() {
     Route::get('/my-results', [UserRatesController::class, 'index']);
     Route::get('/rate/{interviewResult}', [UserRatesController::class, 'get']);
+    Route::get('/interviews-manage', [InterviewManageController::class, 'index']);
+    Route::get('/interviews-manage/results/{interview}', [InterviewManageResultController::class, 'index']);
 });
 
 Route::get('/retokenaize-token/{token}', RetokennaizeController::class);

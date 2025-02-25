@@ -26,7 +26,7 @@
                             <router-link class="dropdown-item" to="/profile/rates">My results</router-link>
                         </li>
                         <li>
-                            <router-link class="dropdown-item" to="/interviews">My interviews</router-link>
+                            <router-link class="dropdown-item" to="/profile/interview-manage">My interviews</router-link>
                         </li>
                     </ul>
                 </li>
