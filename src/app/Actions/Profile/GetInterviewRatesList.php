@@ -17,6 +17,7 @@ class GetInterviewRatesList
 
             array_push($result, [
                 'id' => $interviewsResult->id,
+                'token' => $interviewsResult->interview->token,
                 'title' => $interview->title,
                 'rate' => $interviewsResult->rate,
                 'timeEnded' => $interviewsResult->created_at,

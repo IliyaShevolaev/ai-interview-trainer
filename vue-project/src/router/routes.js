@@ -61,7 +61,7 @@ const routes = [
     },
 
     {
-        path: '/profile/rate/:id',
+        path: '/profile/rate/:token',
         name: 'profile.rate',
         component: ViewInterviewRatePage,
         props: true

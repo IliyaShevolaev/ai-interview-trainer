@@ -4,7 +4,7 @@
             <div class="main-card mb-3" v-for="result in paginatedResults" :key="result.id"
                 @click="handleClick(result.id)">
                 <h2>{{ result.userName }}</h2>
-                <p>Рейтинг: {{ result.rate }}/10</p>
+                <p>Оценка от ИИ: {{ result.rate }}/10</p>
                 <p>Дата: {{ formatDate(result.date) }}</p>
             </div>
         </div>

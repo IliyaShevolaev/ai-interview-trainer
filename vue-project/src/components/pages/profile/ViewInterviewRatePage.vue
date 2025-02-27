@@ -3,7 +3,7 @@
         <div class="main-container">
             <div class="main-card mb-3" v-for="question in questions" :key="question.id">
                 <h2>{{ question.question }}</h2>
-                <p>Рейтинг: {{ question.rate }}/10</p>
+                <p>Оценка от ИИ: {{ question.rate }}/10</p>
                 <p>{{ question.answer }}</p>
             </div>
         </div>
@@ -19,7 +19,7 @@ import RegisterRequire from '../../UI/RegisterRequire.vue';
 
 export default {
     props: {
-        id: String
+        token: String
     },
 
     components: {
@@ -40,10 +40,12 @@ export default {
 
     methods: {
         getResult() {
-            this.$axios.get(`/api/profile/rate/${this.id}`).then(res => {
+            this.$axios.get(`/api/retokenaize-token/${this.token}`).then(responce => {
+                this.$axios.get(`/api/profile/rate/${responce.data.id}`).then(res => {
                 console.log(res);
                 this.questions = res.data;
             });
+            })
         }, 
 
         authCheck() {
