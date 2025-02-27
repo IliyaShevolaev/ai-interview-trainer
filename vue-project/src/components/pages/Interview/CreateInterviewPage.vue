@@ -3,18 +3,25 @@
         <div class="main-container">
             <div class="main-card">
                 <h2 class="mb-4">Create interview</h2>
-                <form>
+                <form @submit.prevent="create">
                     <div class="mb-3">
                         <label for="title" class="form-label">Name</label>
                         <input v-model="name" type="text" class="form-control" id="title" placeholder="Enter name"
                             required>
                     </div>
+
                     <div class="mb-3">
-                        <label for="file" class="form-label">Load .txt file with questions</label>
-                        <input type="file" class="form-control" id="file" accept=".txt" @change="handleFileUpload"
-                            required>
+                        <label class="form-label">Questions</label>
+                        <div v-for="(question, index) in questions" :key="index" class="d-flex mb-2">
+                            <input v-model="questions[index]" type="text" class="form-control"
+                                :placeholder="`Question ${index + 1}`">
+                            <button type="button" class="btn btn-outline-danger ms-2" @click="removeQuestion(index)"
+                                v-if="questions.length > 1">&times;</button>
+                        </div>
+                        <button type="button" class="btn btn-outline-success" @click="addQuestion">+</button>
                     </div>
-                    <button @click.prevent="create" type="submit" class="btn btn-primary">Create</button>
+
+                    <button type="submit" class="btn btn-outline-primary">Create</button>
                 </form>
             </div>
 
@@ -29,54 +36,55 @@
         </div>
     </div>
 </template>
+
 <script>
 export default {
     data() {
         return {
-            name: null,
-            questionsFile: null,
+            name: '',
+            questions: [''],
             interviewToken: null,
-            url: null,
+            url: window.location.origin,
             copySuccess: false
-        }
+        };
     },
-
     computed: {
         fullInterviewLink() {
-            return this.url + '/interview/' + this.interviewToken;
+            return `${this.url}/interview/${this.interviewToken}`;
         }
     },
-
-    mounted() {
-        this.url = window.location.origin;
-        console.log(this.url);
-    },
-
     methods: {
-        handleFileUpload(event) {
-            this.questionsFile = event.target.files[0];
+        addQuestion() {
+            this.questions.push('');
         },
-
+        removeQuestion(index) {
+            this.questions.splice(index, 1);
+        },
         create() {
             let formData = new FormData();
             formData.append("title", this.name);
-            formData.append("questions_file", this.questionsFile);
+
+            this.questions.forEach((question, index) => {
+                if (question !== '') {
+                    formData.append(`questions[${index}]`, question);
+                }
+            });
 
             this.$axios.post("/api/interview/store", formData).then(res => {
-                this.interviewToken = res.data.token;
                 console.log(res);
-            })
+                this.interviewToken = res.data.token;
+            });
         },
-
         copyLink() {
             navigator.clipboard.writeText(this.fullInterviewLink).then(() => {
                 this.copySuccess = true;
                 setTimeout(() => this.copySuccess = false, 2000);
             });
-        },
-    },
-}
+        }
+    }
+};
 </script>
+
 <style scoped>
 .link-card {
     margin-top: 20px;
@@ -107,5 +115,4 @@ export default {
     padding: 8px;
     border-radius: 5px;
 }
-
 </style>

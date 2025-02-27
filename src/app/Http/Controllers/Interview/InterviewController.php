@@ -28,15 +28,11 @@ class InterviewController extends Controller
     {
         $data = $createRequest->validated();
 
-        if ($createRequest->hasFile('questions_file')) {
-            $data['questions_file']  = $createRequest->file('questions_file');
+        $interview = $storeInterviewAction->handle($data);
 
-            $interview = $storeInterviewAction->handle($data);
-
-            return response()->json([
-                'token' => $interview->token
-            ], 200);
-        }
+        return response()->json([
+            'token' => $interview->token
+        ], 200);
     }
 
     public function rate(RateRequest $rateRequest, RateInterviewAnswerAction $rateInterviewAnswerAction, OpenrouterService $openrouterService)

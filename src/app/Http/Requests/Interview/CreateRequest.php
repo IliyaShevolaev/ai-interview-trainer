@@ -23,7 +23,8 @@ class CreateRequest extends FormRequest
     {
         return [
             'title' => 'required|string',
-            'questions_file' => 'required|file|mimes:txt|max:2048',
+            'questions' => 'required|array|min:1',
+            'questions.*' => 'required|string|min:1|max:1000',
         ];
     }
 }
