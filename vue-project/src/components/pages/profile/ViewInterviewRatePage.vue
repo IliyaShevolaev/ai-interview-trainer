@@ -19,7 +19,7 @@ import RegisterRequire from '../../UI/RegisterRequire.vue';
 
 export default {
     props: {
-        token: String
+        id: String
     },
 
     components: {
@@ -40,12 +40,10 @@ export default {
 
     methods: {
         getResult() {
-            this.$axios.get(`/api/retokenaize-token/${this.token}`).then(responce => {
-                this.$axios.get(`/api/profile/rate/${responce.data.id}`).then(res => {
-                    console.log(res);
-                    this.questions = res.data;
-                });
-            })
+            this.$axios.get(`/api/profile/rate/${this.id}`).then(res => {
+                console.log(res);
+                this.questions = res.data;
+            });
         },
 
         authCheck() {

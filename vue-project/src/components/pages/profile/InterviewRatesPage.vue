@@ -2,7 +2,7 @@
     <div v-if="authCheck()" class="page">
         <div class="main-container">
             <div class="main-card mb-3" v-for="result in paginatedResults" :key="result.id"
-                @click="handleClick(result.token)">
+                @click="handleClick(result.id)">
                 <h2>{{ result.title }}</h2>
                 <p>Оценка от ИИ: {{ result.rate }}/10</p>
                 <p>Дата: {{ formatDate(result.timeEnded) }}</p>
@@ -55,8 +55,8 @@ export default {
     },
 
     methods: {
-        handleClick(token) {
-            this.$router.push({ name: 'profile.rate', params: { token: token } });
+        handleClick(id) {
+            this.$router.push({ name: 'profile.rate', params: { id: id } });
         },
 
         getResults() {

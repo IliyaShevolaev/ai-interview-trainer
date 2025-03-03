@@ -110,4 +110,34 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.link-card {
+    margin-top: 20px;
+    background-color: #2c2c2c;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: center;
+    width: 100%;
+    max-width: 500px;
+}
+
+.link-card p {
+    margin: 0 0 10px;
+    font-size: 16px;
+    color: #e0e0e0;
+}
+
+.link-container {
+    display: flex;
+    gap: 10px;
+}
+
+.link-container input {
+    flex-grow: 1;
+    background-color: #3a3a3a;
+    color: #fff;
+    border: none;
+    padding: 8px;
+    border-radius: 5px;
+}
+</style>
