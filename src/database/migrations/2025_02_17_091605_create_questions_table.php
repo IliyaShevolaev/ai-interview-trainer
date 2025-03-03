@@ -16,6 +16,7 @@ return new class extends Migration
 
             $table->string('text');
             $table->foreignId('interview_id')->constrained('interviews', 'id')->onDelete('cascade');
+            $table->boolean('is_available')->default(true);
 
             $table->timestamps();
         });

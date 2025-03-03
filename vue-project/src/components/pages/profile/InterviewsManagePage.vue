@@ -8,7 +8,7 @@
 
                 <div class="btn-container">
                     <button type="btn" class="btn btn-outline-light" @click.prevent="shareLink(result.token)">Поделиться</button>
-                    <button type="btn" class="btn btn-outline-warning" @click.prevent="shareLink(result.token)">Редактировать</button>
+                    <button type="btn" class="btn btn-outline-warning" @click.prevent="editInterview(result.token)">Редактировать</button>
                     <button type="btn" class="btn btn-outline-success" @click.prevent="goToResults(result.token)">Результаты</button>
                 </div>
             </div>
@@ -104,7 +104,11 @@ export default {
             navigator.clipboard.writeText(url).then(() => {}).catch(err => {
                 console.error(err);
             });
-        }
+        }, 
+
+        editInterview(token) {
+            this.$router.push({ name: 'profile.interview.manage.edit', params: { token: token } });
+        },
     }
 };
 </script>

@@ -31,6 +31,7 @@ Route::post('/ask', [AskController::class, 'ask']);
 Route::group(['prefix' => 'interview'], function() {
     Route::get('/get/{interview}', [InterviewController::class, 'index']);
     Route::post('/store', [InterviewController::class, 'store'])->middleware('auth:sanctum');
+    Route::patch('/update', [InterviewController::class, 'update'])->middleware('auth:sanctum');
     Route::post('/rate-answer', [InterviewController::class, 'rate']);
     Route::post('/finish', [InterviewController::class, 'finish']);
 });

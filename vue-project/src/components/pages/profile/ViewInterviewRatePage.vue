@@ -42,11 +42,11 @@ export default {
         getResult() {
             this.$axios.get(`/api/retokenaize-token/${this.token}`).then(responce => {
                 this.$axios.get(`/api/profile/rate/${responce.data.id}`).then(res => {
-                console.log(res);
-                this.questions = res.data;
-            });
+                    console.log(res);
+                    this.questions = res.data;
+                });
             })
-        }, 
+        },
 
         authCheck() {
             return localStorage.getItem('auth') === 'true';

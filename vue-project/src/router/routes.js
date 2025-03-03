@@ -8,6 +8,7 @@ import ViewInterviewRatePage from "@/components/pages/profile/ViewInterviewRateP
 import InterviewsManagePage from "@/components/pages/profile/InterviewsManagePage.vue";
 import InterviewResultsPage from "@/components/pages/profile/InterviewResultsPage.vue";
 import ViewUserAnswers from "@/components/pages/profile/ViewUserAnswers.vue";
+import InterviewEditPage from "@/components/pages/Interview/InterviewEditPage.vue";
 
 const routes = [
     {
@@ -57,6 +58,13 @@ const routes = [
         path: '/profile/interview-manage/result/:token',
         name: 'profile.interview.manage.result',
         component: InterviewResultsPage,
+        props: true
+    },
+
+    {
+        path: '/profile/interview-manage/edit/:token',
+        name: 'profile.interview.manage.edit',
+        component: InterviewEditPage,
         props: true
     },
 
