@@ -29,7 +29,7 @@
                 <p>Your interview link:</p>
                 <div class="link-container">
                     <input type="text" :value="fullInterviewLink" class="form-control" readonly>
-                    <button @click="copyLink" class="btn btn-secondary">Copy</button>
+                    <button @click="copyLink" class="btn btn-secondary"><BootstrapIcon name="copy" size="24"/></button>
                 </div>
                 <p v-if="copySuccess" class="copy-success">Link copied!</p>
             </div>

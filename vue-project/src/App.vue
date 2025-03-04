@@ -10,7 +10,7 @@ import Navbar from './components/UI/Navbar.vue';
 
 export default {
     components: {
-        Navbar
+        Navbar,
     },
 
     mounted() {

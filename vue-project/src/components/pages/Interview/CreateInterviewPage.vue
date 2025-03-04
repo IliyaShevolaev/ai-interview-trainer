@@ -2,7 +2,6 @@
     <div class="page">
         <div class="main-container">
             <div class="main-card">
-                <h2 class="mb-4">Create interview</h2>
                 <form @submit.prevent="create">
                     <div class="mb-3">
                         <label for="title" class="form-label">Name</label>
@@ -29,7 +28,7 @@
                 <p>Your interview link:</p>
                 <div class="link-container">
                     <input type="text" :value="fullInterviewLink" class="form-control" readonly>
-                    <button @click="copyLink" class="btn btn-secondary">Copy</button>
+                    <button @click="copyLink" class="btn btn-secondary"><BootstrapIcon name="copy" size="24"/></button>
                 </div>
                 <p v-if="copySuccess" class="copy-success">Link copied!</p>
             </div>
@@ -38,7 +37,13 @@
 </template>
 
 <script>
+import BootstrapIcon from '@/components/UI/BootstrapIcon.vue';
+
 export default {
+    components: {
+        BootstrapIcon
+    },
+
     data() {
         return {
             name: '',

@@ -7,9 +7,14 @@
                 <p>Создано: {{ formatDate(result.created_at) }}</p>
 
                 <div class="btn-container">
-                    <button type="btn" class="btn btn-outline-light" @click.prevent="shareLink(result.token)">Поделиться</button>
-                    <button type="btn" class="btn btn-outline-warning" @click.prevent="editInterview(result.token)">Редактировать</button>
-                    <button type="btn" class="btn btn-outline-success" @click.prevent="goToResults(result.token)">Результаты</button>
+                    <button type="btn" class="btn btn-outline-light" @click.prevent="shareLink(result.token)">
+                        Поделиться <BootstrapIcon name="copy" size="24" />
+                    </button>
+                    <button type="btn" class="btn btn-outline-warning" @click.prevent="editInterview(result.token)">
+                        Редактировать <BootstrapIcon name="edit" size="24" />
+                    </button>
+                    <button type="btn" class="btn btn-outline-success"
+                        @click.prevent="goToResults(result.token)">Результаты <BootstrapIcon name="result-list" size="24" /></button>
                 </div>
             </div>
         </div>
@@ -28,12 +33,15 @@
 
 <script>
 import RegisterRequire from '../../UI/RegisterRequire.vue';
+import BootstrapIcon from '@/components/UI/BootstrapIcon.vue';
+
 
 export default {
     components: {
-        RegisterRequire
+        RegisterRequire,
+        BootstrapIcon,
     },
-    
+
     data() {
         return {
             results: [],
@@ -101,10 +109,10 @@ export default {
         shareLink(token) {
             const url = `${window.location.origin}/interview/${token}`;
 
-            navigator.clipboard.writeText(url).then(() => {}).catch(err => {
+            navigator.clipboard.writeText(url).then(() => { }).catch(err => {
                 console.error(err);
             });
-        }, 
+        },
 
         editInterview(token) {
             this.$router.push({ name: 'profile.interview.manage.edit', params: { token: token } });
@@ -140,5 +148,4 @@ export default {
     display: flex;
     justify-content: space-around;
 }
-
 </style>
