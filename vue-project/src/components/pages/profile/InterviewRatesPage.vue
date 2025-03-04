@@ -6,6 +6,8 @@
                 <h2>{{ result.title }}</h2>
                 <p>Оценка от ИИ: {{ result.rate }}/10</p>
                 <p>Дата: {{ formatDate(result.timeEnded) }}</p>
+
+                <button @click.stop="restart(result.token)" type="button" class="btn btn-outline-light">Restart <BootstrapIcon name="restart" size="24"/></button>
             </div>
         </div>
 
@@ -23,10 +25,12 @@
 
 <script>
 import RegisterRequire from '../../UI/RegisterRequire.vue';
+import BootstrapIcon from '@/components/UI/BootstrapIcon.vue';
 
 export default {
     components: {
-        RegisterRequire
+        RegisterRequire,
+        BootstrapIcon,
     },
     
     data() {
@@ -79,6 +83,10 @@ export default {
             const minutes = String(date.getMinutes()).padStart(2, '0');
 
             return `${day}/${month}/${year} ${hours}:${minutes}`;
+        },
+
+        restart(token) {
+            this.$router.push({ name: 'interview.start', params: { token: token } });
         },
 
         prevPage() {

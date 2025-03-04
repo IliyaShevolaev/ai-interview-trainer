@@ -23,11 +23,11 @@
                         recording</button>
                     <button @click.prevent="startRecognition(false)" type="button" class="btn btn-outline-light">Add
                         record</button>
-                    <button @click.prevent="sendAnswer" v-if="!this.userAnswers[this.questionId]" type="button"
+                    <button @click.prevent="sendAnswer" v-if="!this.userAnswers[this.questionId] && !this.isAiThinking" type="button"
                         class="btn btn-outline-light">Send answer</button>
 
                     <div class="tooltip-container" @mouseenter="showTooltip = true" @mouseleave="showTooltip = false">
-                        <button @click.prevent="bugReport" v-if="userAnswers[questionId]" type="button"
+                        <button @click.prevent="bugReport" v-if="userAnswers[questionId] && !this.isAiThinking" type="button"
                             class="btn btn-outline-danger">
                             <BootstrapIcon name="bug" size="24" />
                         </button>
@@ -128,6 +128,7 @@ export default {
         },
 
         sendAnswer() {
+            this.isAiThinking = true;
             this.$axios.post('/api/interview/rate-answer', {
                 interviewTitle: this.title,
                 question: this.questions[this.questionId]['text'],
@@ -137,22 +138,20 @@ export default {
                 this.userAnswers[this.questionId] = this.answer
                 console.log(this.userAnswers);
                 console.log(this.aiRates);
+                this.isAiThinking = false;
             });
         },
 
         bugReport() {
-            if (!this.isAiThinking) {
-                this.isAiThinking = true;
-                this.$axios.post('/api/report', {
-                    question_id: this.questions[this.questionId]['id'],
-                    answer: this.answer,
-                    aiRate: this.aiRates[this.questionId],
-                }).then(res => {
-                    console.log(res);
-                    this.sendAnswer();
-                    this.isAiThinking = false;
-                });
-            }
+            this.isAiThinking = true;
+            this.$axios.post('/api/report', {
+                question_id: this.questions[this.questionId]['id'],
+                answer: this.answer,
+                aiRate: this.aiRates[this.questionId],
+            }).then(res => {
+                console.log(res);
+                this.sendAnswer();
+            });
 
         },
 

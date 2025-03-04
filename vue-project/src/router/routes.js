@@ -9,6 +9,8 @@ import InterviewsManagePage from "@/components/pages/profile/InterviewsManagePag
 import InterviewResultsPage from "@/components/pages/profile/InterviewResultsPage.vue";
 import ViewUserAnswers from "@/components/pages/profile/ViewUserAnswers.vue";
 import InterviewEditPage from "@/components/pages/Interview/InterviewEditPage.vue";
+import FeedBackAnswerPage from "@/components/pages/profile/FeedBackAnswerPage.vue";
+
 
 const routes = [
     {
@@ -79,6 +81,13 @@ const routes = [
         path: '/profile/view-user-results/:id',
         name: 'profile.interview.manage.answers',
         component: ViewUserAnswers,
+        props: true
+    },
+
+    {
+        path: '/profile/feedback/:id',
+        name: 'profile.feedback',
+        component: FeedBackAnswerPage,
         props: true
     },
 ];

@@ -15,6 +15,7 @@ class GetInterviewRate
 
         foreach ($answers as $answer) {
             array_push($result, [
+                'answer_id' => $answer->id,
                 'question' => $answer->question->text,
                 'answer' => $answer->answer,
                 'rate' => $answer->rate,

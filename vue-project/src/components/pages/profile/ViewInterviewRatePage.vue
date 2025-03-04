@@ -5,6 +5,8 @@
                 <h2>{{ question.question }}</h2>
                 <p>Оценка от ИИ: {{ question.rate }}/10</p>
                 <p>{{ question.answer }}</p>
+
+                <button @click.prevent="getFeedback(question.answer_id)" type="button" class="btn btn-outline-light">Спросить пояснение</button>
             </div>
         </div>
     </div>
@@ -44,6 +46,10 @@ export default {
                 console.log(res);
                 this.questions = res.data;
             });
+        },
+
+        getFeedback(id) {
+            this.$router.push({ name: 'profile.feedback', params: {id: id}});
         },
 
         authCheck() {
