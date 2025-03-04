@@ -10,6 +10,7 @@ import InterviewResultsPage from "@/components/pages/profile/InterviewResultsPag
 import ViewUserAnswers from "@/components/pages/profile/ViewUserAnswers.vue";
 import InterviewEditPage from "@/components/pages/Interview/InterviewEditPage.vue";
 import FeedBackAnswerPage from "@/components/pages/profile/FeedBackAnswerPage.vue";
+import FindPage from "@/components/pages/Interview/FindPage.vue";
 
 
 const routes = [
@@ -88,6 +89,13 @@ const routes = [
         path: '/profile/feedback/:id',
         name: 'profile.feedback',
         component: FeedBackAnswerPage,
+        props: true
+    },
+
+    {
+        path: '/find',
+        name: 'find',
+        component: FindPage,
         props: true
     },
 ];

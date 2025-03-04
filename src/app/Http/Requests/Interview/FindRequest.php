@@ -4,7 +4,7 @@ namespace App\Http\Requests\Interview;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CreateRequest extends FormRequest
+class FindRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,7 @@ class CreateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required|string',
-            'questions' => 'required|array|min:1',
-            'questions.*' => 'required|string|min:1|max:1000',
-            'isPublic' => 'required|boolean',
+            'searchQuery' => 'required|string',
         ];
     }
 }

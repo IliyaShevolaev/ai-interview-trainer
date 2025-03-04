@@ -21,6 +21,7 @@ class StoreInterviewAction
             'title' =>  $data['title'],
             'user_id' => Auth::id(),
             'token' => Str::random(12),
+            'is_public' => $data['isPublic'],
         ]);
 
         $questionsData = [];

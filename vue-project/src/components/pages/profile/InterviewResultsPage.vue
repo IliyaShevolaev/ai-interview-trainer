@@ -90,7 +90,7 @@ export default {
 </script>
 
 <style scoped>
-    .main-card {
+.main-card {
     cursor: pointer;
     transition: transform 0.2s, box-shadow 0.2s;
 }

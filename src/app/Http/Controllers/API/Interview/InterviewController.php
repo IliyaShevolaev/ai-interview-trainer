@@ -13,11 +13,13 @@ use App\Actions\Interview\StoreInterviewAction;
 use App\Actions\Interview\FinishInterviewAction;
 use App\Actions\Interview\UpdateInterviewAction;
 use App\Actions\Interview\RateInterviewAnswerAction;
+use App\Http\Requests\Interview\FindRequest;
 use App\Http\Requests\Interview\UpdateRequest;
+use App\Http\Resources\Interview\InterviewResource;
 
 class InterviewController extends Controller
 {
-    public function index(Interview $interview)
+    public function get(Interview $interview)
     {
         return response()->json([
             'id' => $interview->id,
@@ -37,7 +39,7 @@ class InterviewController extends Controller
         ], 200);
     }
 
-    public function update(UpdateRequest $updateRequest, UpdateInterviewAction $updateInterviewAction) 
+    public function update(UpdateRequest $updateRequest, UpdateInterviewAction $updateInterviewAction)
     {
         $data = $updateRequest->validated();
 
@@ -59,7 +61,7 @@ class InterviewController extends Controller
         ], 200);
     }
 
-    public function finish(FinishRequest $finishRequest, FinishInterviewAction $finishInterviewAction) 
+    public function finish(FinishRequest $finishRequest, FinishInterviewAction $finishInterviewAction)
     {
         $data = $finishRequest->validated();
 
@@ -68,5 +70,14 @@ class InterviewController extends Controller
         return response()->json([
             'rate' => $avgRate
         ], 200);
+    }
+
+    public function find(FindRequest $findRequest)
+    {
+        $data = $findRequest->validated();
+
+        $interviews = Interview::whereRaw('LOWER(title) LIKE ?', ['%' . strtolower($data['searchQuery']) . '%'])->where('is_public', true)->get();
+
+        return InterviewResource::collection($interviews);
     }
 }

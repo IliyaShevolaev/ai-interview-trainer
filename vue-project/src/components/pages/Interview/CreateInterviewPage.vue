@@ -4,21 +4,29 @@
             <div class="main-card">
                 <form @submit.prevent="create">
                     <div class="mb-3">
-                        <label for="title" class="form-label">Name</label>
-                        <input v-model="name" type="text" class="form-control" id="title" placeholder="Enter name"
+                        <label for="title" class="form-label">Название</label>
+                        <input v-model="name" type="text" class="form-control" id="title" placeholder="Введите название"
                             required>
                     </div>
 
                     <div class="mb-3">
-                        <label class="form-label">Questions</label>
+                        <label class="form-label">Список вопросов</label>
                         <div v-for="(question, index) in questions" :key="index" class="d-flex mb-2">
                             <input v-model="questions[index]" type="text" class="form-control"
-                                :placeholder="`Question ${index + 1}`">
+                                :placeholder="`Вопрос ${index + 1}`">
                             <button type="button" class="btn btn-outline-danger ms-2" @click="removeQuestion(index)"
                                 v-if="questions.length > 1">&times;</button>
                         </div>
                         <button type="button" class="btn btn-outline-success" @click="addQuestion">+</button>
                     </div>
+
+                    <div class="form-check form-switch">
+                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" v-model="isPublic">
+                        <label class="form-check-label" for="flexSwitchCheckDefault">
+                            <p>Доступ: {{ isPublic ? 'Общедоступный' : 'Только по ссылке' }}</p>
+                        </label>
+                    </div>
+                    
 
                     <button type="submit" class="btn btn-outline-primary">Create</button>
                 </form>
@@ -28,7 +36,9 @@
                 <p>Your interview link:</p>
                 <div class="link-container">
                     <input type="text" :value="fullInterviewLink" class="form-control" readonly>
-                    <button @click="copyLink" class="btn btn-secondary"><BootstrapIcon name="copy" size="24"/></button>
+                    <button @click="copyLink" class="btn btn-secondary">
+                        <BootstrapIcon name="copy" size="24" />
+                    </button>
                 </div>
                 <p v-if="copySuccess" class="copy-success">Link copied!</p>
             </div>
@@ -48,6 +58,7 @@ export default {
         return {
             name: '',
             questions: [''],
+            isPublic: false,
             interviewToken: null,
             url: window.location.origin,
             copySuccess: false
@@ -62,24 +73,29 @@ export default {
         addQuestion() {
             this.questions.push('');
         },
+
         removeQuestion(index) {
             this.questions.splice(index, 1);
         },
-        create() {
-            let formData = new FormData();
-            formData.append("title", this.name);
 
-            this.questions.forEach((question, index) => {
+        create() {
+            let questionsList = [];
+            this.questions.forEach((question) => {
                 if (question !== '') {
-                    formData.append(`questions[${index}]`, question);
+                    questionsList.push(question);
                 }
             });
 
-            this.$axios.post("/api/interview/store", formData).then(res => {
+            this.$axios.post("/api/interview/store", {
+                'title': this.name,
+                'questions': questionsList,
+                'isPublic': this.isPublic,
+            }).then(res => {
                 console.log(res);
                 this.interviewToken = res.data.token;
             });
         },
+
         copyLink() {
             navigator.clipboard.writeText(this.fullInterviewLink).then(() => {
                 this.copySuccess = true;
