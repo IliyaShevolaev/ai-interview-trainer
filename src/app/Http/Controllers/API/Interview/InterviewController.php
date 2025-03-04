@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Interview;
+namespace App\Http\Controllers\API\Interview;
 
 use App\Models\Interview\Interview;
 use Illuminate\Support\Facades\Log;

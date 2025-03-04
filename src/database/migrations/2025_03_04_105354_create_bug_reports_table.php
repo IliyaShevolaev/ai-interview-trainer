@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('questions', function (Blueprint $table) {
+        Schema::create('bug_reports', function (Blueprint $table) {
             $table->id();
 
-            $table->text('text');
-            $table->foreignId('interview_id')->constrained('interviews', 'id')->onDelete('cascade');
-            $table->boolean('is_available')->default(true);
+            $table->foreignId('question_id')->constrained('questions', 'id')->onDelete('cascade');
+            $table->text('answer');
+            $table->text('ai_rate');
 
             $table->timestamps();
         });
@@ -27,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('questions');
+        Schema::dropIfExists('bug_reports');
     }
 };

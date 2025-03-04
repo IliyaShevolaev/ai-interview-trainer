@@ -2,14 +2,15 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\API\Admin\BugReportController;
 use App\Http\Controllers\API\ApiController;
-use App\Http\Controllers\Interview\AskController;
+use App\Http\Controllers\API\Interview\AskController;
 use App\Http\Controllers\API\Auth\LoginController;
 use App\Http\Controllers\API\Auth\RegisterController;
 use App\Http\Controllers\API\Auth\CheckAuthController;
 use App\Http\Controllers\API\Profile\InterviewManageController;
 use App\Http\Controllers\API\Profile\InterviewManageResultController;
-use App\Http\Controllers\Interview\InterviewController;
+use App\Http\Controllers\API\Interview\InterviewController;
 use App\Http\Controllers\API\Profile\UserRatesController;
 use App\Http\Controllers\API\Tools\RetokennaizeController;
 
@@ -45,3 +46,5 @@ Route::group(['prefix' => 'profile', 'middleware' => 'auth:sanctum'], function()
 });
 
 Route::get('/retokenaize-token/{token}', RetokennaizeController::class);
+
+Route::post('/report', [BugReportController::class, 'store']);

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('answers', function (Blueprint $table) {
             $table->id();
 
-            $table->string('answer');
+            $table->text('answer');
             $table->integer('rate');
             $table->integer('user_id')->constrained('users', 'id')->onDelete('cascade');
             $table->integer('question_id')->constrained('questions', 'id')->onDelete('cascade');

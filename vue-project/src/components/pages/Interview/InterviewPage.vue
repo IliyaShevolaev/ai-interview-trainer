@@ -13,8 +13,11 @@
         <div v-else class="main-container">
             <div class="main-card">
                 <p>{{ this.questions[this.questionId]['text'] }}</p>
-                <textarea v-if="!this.userAnswers[this.questionId]" v-model="answer" placeholder="Say something..." class="form-control" rows="4"></textarea>
-                <textarea v-else class="form-control" disabled rows="4">{{ this.userAnswers[this.questionId] }}</textarea>
+                <textarea v-if="!this.userAnswers[this.questionId]" v-model="answer" placeholder="Say something..."
+                    class="form-control" rows="4"></textarea>
+                <textarea v-else class="form-control" disabled
+                    rows="4">{{ this.userAnswers[this.questionId] }}</textarea>
+
                 <div class="btn-speech-container">
                     <button @click.prevent="startRecognition" type="button" class="btn btn-outline-light">Start
                         recording</button>
@@ -22,7 +25,17 @@
                         record</button>
                     <button @click.prevent="sendAnswer" v-if="!this.userAnswers[this.questionId]" type="button"
                         class="btn btn-outline-light">Send answer</button>
+
+                    <div class="tooltip-container" @mouseenter="showTooltip = true" @mouseleave="showTooltip = false">
+                        <button @click.prevent="bugReport" v-if="userAnswers[questionId]" type="button"
+                            class="btn btn-outline-danger">
+                            <BootstrapIcon name="bug" size="24" />
+                        </button>
+                        <div v-if="showTooltip" class="tooltip">Нажмите, чтобы повторно оценить ваш ответ, если считаете
+                            оценку ИИ некорректной или если она не содержит баллов в формате X/10.</div>
+                    </div>
                 </div>
+
                 <p class="mt-3" v-if="this.aiRates[this.questionId]">{{ this.aiRates[this.questionId] }}</p>
             </div>
 
@@ -32,16 +45,26 @@
             </div>
 
             <div class="finish-button">
-                <button @click="finishInterview" v-if="this.userAnswers.length == this.questions.length && !this.interviewFinished" class="btn btn-outline-danger">Закончить собеседование</button>
-                <p v-if="this.interviewFinished" class="text-success mt-3">Собеседование завершено с рейтингом {{ this.finalRate }}/10 Ваши данные успешно отправлены создателю.</p>
+                <button @click="finishInterview"
+                    v-if="this.userAnswers.length == this.questions.length && !this.interviewFinished"
+                    class="btn btn-outline-danger">Закончить собеседование</button>
+                <p v-if="this.interviewFinished" class="text-success mt-3">Собеседование завершено с рейтингом {{
+                    this.finalRate }}/10 Ваши данные успешно отправлены создателю.</p>
             </div>
         </div>
     </div>
 </template>
+
 <script>
+import BootstrapIcon from '@/components/UI/BootstrapIcon.vue';
+
 export default {
     props: {
         token: String
+    },
+
+    components: {
+        BootstrapIcon,
     },
 
     data() {
@@ -59,7 +82,9 @@ export default {
             aiRates: [],
 
             finalRate: 0,
-        }
+            showTooltip: false,
+            isAiThinking: false,
+        };
     },
 
     mounted() {
@@ -69,7 +94,6 @@ export default {
     methods: {
         getInterviewData(id) {
             this.$axios.get(`/api/interview/get/${id}`).then(res => {
-                console.log(res);
                 this.interviewId = res.data.id;
                 this.title = res.data.title;
                 this.questions = res.data.questions;
@@ -116,6 +140,22 @@ export default {
             });
         },
 
+        bugReport() {
+            if (!this.isAiThinking) {
+                this.isAiThinking = true;
+                this.$axios.post('/api/report', {
+                    question_id: this.questions[this.questionId]['id'],
+                    answer: this.answer,
+                    aiRate: this.aiRates[this.questionId],
+                }).then(res => {
+                    console.log(res);
+                    this.sendAnswer();
+                    this.isAiThinking = false;
+                });
+            }
+
+        },
+
         nextQuestion() {
             if (this.questionId < this.questions.length - 1) {
                 this.questionId++;
@@ -127,7 +167,7 @@ export default {
             if (this.questionId > 0) {
                 this.questionId--;
             }
-        }, 
+        },
 
         finishInterview() {
             this.$axios.post('/api/interview/finish', {
@@ -141,8 +181,9 @@ export default {
             });
         },
     },
-}
+};
 </script>
+
 <style scoped>
 .form-control {
     background-color: #333;
@@ -167,8 +208,8 @@ export default {
 }
 
 .form-control::placeholder {
-  color: rgb(255, 255, 255); 
-  opacity: 1; 
+    color: rgb(255, 255, 255);
+    opacity: 1;
 }
 
 .btn-speech-container {
@@ -202,5 +243,30 @@ export default {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+}
+
+.tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.tooltip {
+    position: absolute;
+    bottom: 130%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 14px;
+    white-space: nowrap;
+    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.tooltip-container:hover .tooltip {
+    opacity: 1;
 }
 </style>

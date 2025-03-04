@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Interview;
+namespace App\Http\Controllers\API\Interview;
 
 use App\Http\Controllers\Controller;
 use App\Services\Openrouter\OpenrouterService;

@@ -38,9 +38,15 @@
 </template>
 
 <script>
+import BootstrapIcon from '@/components/UI/BootstrapIcon.vue';
+
 export default {
     props: {
         token: String,
+    },
+
+    components: {
+        BootstrapIcon,
     },
 
     data() {
