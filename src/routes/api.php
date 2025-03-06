@@ -14,6 +14,7 @@ use App\Http\Controllers\API\Interview\InterviewController;
 use App\Http\Controllers\API\Profile\GetAIFeedbackController;
 use App\Http\Controllers\API\Profile\InterviewManageController;
 use App\Http\Controllers\API\Profile\InterviewManageResultController;
+use App\Http\Controllers\API\Profile\ModelsController;
 
 Route::get('/user', function (Request $request) {
     return $request->user();
@@ -45,6 +46,8 @@ Route::group(['prefix' => 'profile', 'middleware' => 'auth:sanctum'], function()
     Route::get('/interviews-manage', [InterviewManageController::class, 'index']);
     Route::get('/interviews-manage/results/{interview}', [InterviewManageResultController::class, 'index']);
     Route::get('/interviews-manage/user-answers/{interviewResult}', [InterviewManageResultController::class, 'get']);
+    Route::get('/modelslist', [ModelsController::class, 'index']);
+    Route::post('/setmodel', [ModelsController::class, 'set']);
 });
 
 Route::get('/retokenaize-token/{token}', RetokennaizeController::class);

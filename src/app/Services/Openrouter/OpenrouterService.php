@@ -2,6 +2,7 @@
 
 namespace App\Services\Openrouter;
 
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
 
 class OpenrouterService
@@ -16,8 +17,7 @@ class OpenrouterService
         ];
 
         $data = [
-            //"model" => "google/gemini-2.0-flash-lite-preview-02-05:free",
-            "model" => "openchat/openchat-7b:free",
+            "model" => Auth::user()->selected_model,
             "messages" => [
                 [
                     "role" => "user",
