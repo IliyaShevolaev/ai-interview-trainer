@@ -3,7 +3,6 @@
 namespace App\Actions\Profile;
 
 use App\Models\Interview\Interview;
-use App\Models\Interview\InterviewResult;
 use App\Models\User;
 
 class GetManageResults

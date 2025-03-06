@@ -2,6 +2,7 @@
 
 namespace App\Models\Interview;
 
+use App\Models\User;
 use Illuminate\Database\Eloquent\Model;
 
 class InterviewResult extends Model
@@ -16,5 +17,10 @@ class InterviewResult extends Model
     public function answers()
     {
         return $this->hasMany(Answer::class, 'interview_result_id', 'id');
+    }
+
+    public function user()
+    {
+        return $this->hasOne(User::class, 'id', 'user_id');
     }
 }

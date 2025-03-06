@@ -14,8 +14,8 @@
                 @click="handleClick(interview.token)">
                 <h2>
                     {{ interview.title }} <span style="font-size: 0.5em;">by {{ interview.username }}</span>
-                    <p>Содержит вопросов: {{ interview.questionsCount }}.</p> 
                 </h2>
+                <p>Содержит вопросов: {{ interview.questionsCount }}. Уже прошли: {{ interview.completedCount }}.</p> 
             </div>
         </div>
 
@@ -66,7 +66,7 @@ export default {
                 searchQuery: this.searchQuery,
             }).then(res => {
                 console.log(res);
-                this.interviews = res.data.data;
+                this.interviews = res.data;
             })
         },
 

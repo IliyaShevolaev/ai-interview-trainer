@@ -2,25 +2,22 @@
 
 namespace App\Http\Controllers\API\Profile;
 
-use App\Actions\Profile\GetManageResultAnswer;
 use App\Actions\Profile\GetManageResults;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\Interview\AnswerResource;
+use App\Http\Resources\Interview\InterviewResultResource;
 use App\Models\Interview\Interview;
 use App\Models\Interview\InterviewResult;
 
 class InterviewManageResultController extends Controller
 {
-    public function index(Interview $interview, GetManageResults $getManageResults)
+    public function index(Interview $interview)
     {
-        $resultArray = $getManageResults->handle($interview);
-
-        return response()->json($resultArray, 200);
+        return InterviewResultResource::collection($interview->interviewResults()->with(['interview', 'user'])->get());
     }
 
-    public function get(InterviewResult $interviewResult, GetManageResultAnswer $getManageResultAnswer)
+    public function get(InterviewResult $interviewResult)
     {
-        $resultArray = $getManageResultAnswer->handle($interviewResult);
-
-        return response()->json($resultArray, 200);
+        return AnswerResource::collection($interviewResult->answers()->with('question')->get());
     }
 }

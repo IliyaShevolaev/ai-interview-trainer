@@ -14,9 +14,6 @@ class StoreInterviewAction
     {
         $questionsList = $data['questions'];
 
-        Log::info('newnewnew');
-        Log::info($data);
-
         $interview = Interview::create([
             'title' =>  $data['title'],
             'user_id' => Auth::id(),

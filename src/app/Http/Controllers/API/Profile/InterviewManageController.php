@@ -2,17 +2,16 @@
 
 namespace App\Http\Controllers\API\Profile;
 
-use App\Actions\Profile\GetManagedInterviews;
 use App\Http\Controllers\Controller;
-use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use App\Http\Resources\Interview\InterviewResource;
 
 class InterviewManageController extends Controller
 {
-    public function index(GetManagedInterviews $getManagedInterviews)
+    public function index()
     {
-        $resultArray = $getManagedInterviews->handle(User::find(Auth::id()));
+        $interviews = Auth::user()->interviews()->with(['questions', 'interviewResults', 'userCreator'])->get();
 
-        return response()->json($resultArray, 200);
+        return InterviewResource::collection($interviews);
     }
 }

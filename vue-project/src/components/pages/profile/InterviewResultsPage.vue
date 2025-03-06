@@ -5,7 +5,7 @@
                 @click="handleClick(result.id)">
                 <h2>{{ result.userName }}</h2>
                 <p>Оценка от ИИ: {{ result.rate }}/10</p>
-                <p>Дата: {{ formatDate(result.date) }}</p>
+                <p>Дата: {{ formatDate(result.timeEnded) }}</p>
             </div>
         </div>
 
