@@ -27,7 +27,7 @@
                         class="btn btn-outline-light">Send answer</button>
 
                     <div class="tooltip-container" @mouseenter="showTooltip = true" @mouseleave="showTooltip = false">
-                        <button @click.prevent="bugReport" v-if="userAnswers[questionId] && !this.isAiThinking" type="button"
+                        <button @click.prevent="bugReport" v-if="userAnswers[questionId] && !this.isAiThinking && !this.interviewFinished" type="button"
                             class="btn btn-outline-danger">
                             <BootstrapIcon name="bug" size="24" />
                         </button>

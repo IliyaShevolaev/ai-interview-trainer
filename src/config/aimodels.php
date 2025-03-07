@@ -7,4 +7,6 @@ return [
         'Qwen 2.5' => 'qwen/qwen2.5-vl-72b-instruct:free',
         'Meta: Llama 3.3' => 'meta-llama/llama-3.3-70b-instruct:free',
     ],
+
+    'default_model' => 'openchat/openchat-7b:free'
 ];

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('selected_model')->default('openchat/openchat-7b:free');
+            $table->string('selected_model')->default(config('aimodels.default_model'));
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();

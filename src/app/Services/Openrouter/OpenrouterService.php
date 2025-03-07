@@ -17,7 +17,7 @@ class OpenrouterService
         ];
 
         $data = [
-            "model" => Auth::user()->selected_model,
+            "model" => Auth::check() ? Auth::user()->selected_model : config('aimodels.default_model'),
             "messages" => [
                 [
                     "role" => "user",

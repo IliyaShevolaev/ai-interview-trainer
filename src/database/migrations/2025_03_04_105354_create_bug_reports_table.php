@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
 
             $table->foreignId('question_id')->constrained('questions', 'id')->onDelete('cascade');
+            $table->string('model_name');
             $table->text('answer');
             $table->text('ai_rate');
 
