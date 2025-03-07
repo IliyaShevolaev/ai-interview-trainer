@@ -19,11 +19,13 @@
             </div>
         </div>
 
-        <div class="pagination">
+        <div v-if="this.findCompleted" class="pagination">
             <button @click="prevPage" :disabled="currentPage === 1">Назад</button>
             <span>Страница {{ currentPage }} из {{ totalPages }}</span>
             <button @click="nextPage" :disabled="currentPage === totalPages">Вперёд</button>
         </div>
+
+        <img src="../../../assets/cat.jpg" alt="AI Trainer" class="corner-image">
     </div>
 </template>
 
@@ -159,5 +161,13 @@ export default {
 
 .search-input::placeholder {
     color: #bbbbbb;
+}
+
+.corner-image {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    width: 100px;
+    height: auto;
 }
 </style>

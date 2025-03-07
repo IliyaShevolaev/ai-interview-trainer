@@ -26,8 +26,6 @@
             </ul>
         </section>
 
-        <img src="../../assets/cat.jpg" alt="AI Trainer" class="corner-image">
-
         <footer class="text-secondary text-small position-absolute w-100 text-center bottom-0 py-2">
             &copy; 2025 AI Interview Trainer. Все права защищены.
         </footer>
@@ -56,13 +54,5 @@ export default {
 
 .text-small {
     font-size: 0.875rem;
-}
-
-.corner-image {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    width: 100px;
-    height: auto;
 }
 </style>
