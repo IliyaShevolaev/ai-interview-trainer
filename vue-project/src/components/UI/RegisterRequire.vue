@@ -12,11 +12,6 @@
 
 <script>
 export default {
-    methods: {
-        handleClick(id) {
-            this.$router.push({ name: 'profile.rate', params: { id: id } });
-        },
-    },
 }
 </script>
 

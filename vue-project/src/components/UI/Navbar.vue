@@ -24,7 +24,7 @@
         <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNavDropdown">
             <ul class="navbar-nav">
                 <li class="nav-item">
-                    <router-link to="/" class="nav-link" active-class="active">Home</router-link>
+                    <router-link to="/" class="nav-link" active-class="active">Главная</router-link>
                 </li>
                 <li class="nav-item">
                     <router-link to="/interview/create" class="nav-link" active-class="active">Создать</router-link>

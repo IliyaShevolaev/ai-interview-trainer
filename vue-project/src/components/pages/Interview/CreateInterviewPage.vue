@@ -26,9 +26,14 @@
                             <p>Доступ: {{ isPublic ? 'Общедоступный' : 'Только по ссылке' }}</p>
                         </label>
                     </div>
-                    
 
-                    <button type="submit" class="btn btn-outline-primary">Create</button>
+
+                    <button v-if="authCheck()" type="submit" class="btn btn-outline-primary">Create</button>
+                    <p v-else>Необходима
+                        <router-link to="/auth" type="button" class="btn btn-outline-light">
+                            регистрация
+                        </router-link>, для создания собеседования
+                    </p>
                 </form>
             </div>
 
@@ -49,9 +54,10 @@
 <script>
 import BootstrapIcon from '@/components/UI/BootstrapIcon.vue';
 
+
 export default {
     components: {
-        BootstrapIcon
+        BootstrapIcon,
     },
 
     data() {
@@ -70,6 +76,10 @@ export default {
         }
     },
     methods: {
+        authCheck() {
+            return localStorage.getItem('auth') === 'true';
+        },
+
         addQuestion() {
             this.questions.push('');
         },
