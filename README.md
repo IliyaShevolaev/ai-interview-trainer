@@ -41,7 +41,7 @@ To run the project, follow these steps:
 5. **Generate the application key:**
 
    ```bash
-  docker-compose run --rm artisan key:generate
+     docker-compose run --rm artisan key:generate
 
 6. **Run database migrations:**
 
@@ -91,7 +91,7 @@ AI Interview Trainer — это веб-приложение, разработа�
 5. **Сгенерируйте ключ приложения:**
 
    ```bash
-  docker-compose run --rm artisan key:generate
+     docker-compose run --rm artisan key:generate
 
 6. **Выполните миграции базы данных:**
 
