@@ -1,39 +1,46 @@
 <template>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
-            aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <ul class="navbar-nav ml-auto profile-nav">
-                <li class="nav-item dropdown" @click="toggleDropdown">
-                    <button class="btn btn-secondary dropdown-toggle"><BootstrapIcon name="profile" size="24" /></button>
-                    <ul v-if="isDropdownOpen" class="dropdown-menu">
-                        <li>
-                            <router-link class="dropdown-item" to="/profile" v-if="isAuth">Профиль</router-link>
-                            <router-link class="dropdown-item" to="/auth" v-else>Auth</router-link>
-                        </li>
-                        <li>
-                            <router-link class="dropdown-item" to="/profile/rates">Мои результаты</router-link>
-                        </li>
-                        <li>
-                            <router-link class="dropdown-item" to="/profile/interview-manage">Мои собеседования</router-link>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-        <div class="collapse navbar-collapse d-flex justify-content-between" id="navbarNavDropdown">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                    <router-link to="/" class="nav-link" active-class="active">Главная</router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link to="/interview/create" class="nav-link" active-class="active">Создать</router-link>
-                </li>
-                <li class="nav-item">
-                    <router-link to="/find" class="nav-link" active-class="active">Поиск</router-link>
-                </li>
-            </ul>
-            
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid px-4">
+            <router-link to="/" class="navbar-brand">AI Interview Trainer</router-link>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+                aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <router-link to="/" class="nav-link">Главная</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link to="/interview/create" class="nav-link">Создать</router-link>
+                    </li>
+                    <li class="nav-item">
+                        <router-link to="/find" class="nav-link">Поиск</router-link>
+                    </li>
+                </ul>
+
+                <ul class="navbar-nav">
+                    <li class="nav-item dropdown" @click="toggleDropdown">
+                        <button class="btn profile-btn" type="button">
+                            <BootstrapIcon name="profile" size="20" />
+                        </button>
+                        <ul v-if="isDropdownOpen" class="dropdown-menu dropdown-menu-end show">
+                            <li>
+                                <router-link class="dropdown-item" to="/profile" v-if="isAuth">Профиль</router-link>
+                                <router-link class="dropdown-item" to="/auth" v-else>Войти</router-link>
+                            </li>
+                            <li>
+                                <router-link class="dropdown-item" to="/profile/rates">Мои результаты</router-link>
+                            </li>
+                            <li>
+                                <router-link class="dropdown-item" to="/profile/interview-manage">Мои собеседования</router-link>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
         </div>
     </nav>
 </template>
@@ -67,17 +74,26 @@ export default {
 </script>
 
 <style scoped>
-.dropdown-menu {
-    display: block;
-    position: absolute;
-    background-color: #1f1f1f;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+.profile-btn {
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    color: var(--color-text-2);
+    border-radius: var(--radius-md);
+    padding: 6px 10px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.dropdown-item {
-    padding: 10px 15px;
+.profile-btn:hover {
+    border-color: var(--color-border-strong);
+    color: var(--color-text);
+}
+
+.dropdown-menu.show {
     display: block;
-    color: white;
-    text-decoration: none;
+    position: absolute;
+    right: 0;
+    margin-top: var(--space-2);
 }
 </style>

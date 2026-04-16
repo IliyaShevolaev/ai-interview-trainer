@@ -2,21 +2,41 @@
     <div class="page">
         <div class="main-container">
             <div class="main-card">
-                <p>name: {{ this.user.name }}</p>
-                <p>email: {{ this.user.email }}</p>
-                <div class="form-group">
-                    <label for="exampleFormControlSelect1">Выберите модель</label>
-                    <select v-model="selectedModel" class="form-control mt-3" id="exampleFormControlSelect1">
-                        <option v-for="(value, key) in modelsList" :key="key" :value="key">{{ value.name }}</option>
+                <h4 class="mb-4">Профиль</h4>
+
+                <div class="profile-info mb-4">
+                    <div class="info-row">
+                        <span class="text-muted-custom small">Имя</span>
+                        <span>{{ user.name }}</span>
+                    </div>
+                    <div class="info-row">
+                        <span class="text-muted-custom small">Email</span>
+                        <span>{{ user.email }}</span>
+                    </div>
+                </div>
+
+                <div class="mb-4">
+                    <label for="modelSelect" class="form-label">Выберите модель ИИ</label>
+                    <select v-model="selectedModel" class="form-select" id="modelSelect">
+                        <option v-for="(value, key) in modelsList" :key="key" :value="key">
+                            {{ value.name }}
+                        </option>
                     </select>
                 </div>
 
-                <button @click.prevent="selectNewModel" type="button" class="btn btn-outline-success mt-3">Изменить модель</button>
-                <button @click.prevent="logout" type="button" class="btn btn-outline-danger mt-3 ms-3">Выход</button>
+                <div class="d-flex gap-2 flex-wrap">
+                    <button @click.prevent="selectNewModel" type="button" class="btn btn-accent">
+                        Сохранить модель
+                    </button>
+                    <button @click.prevent="logout" type="button" class="btn btn-ghost btn-logout">
+                        Выход
+                    </button>
+                </div>
             </div>
         </div>
     </div>
 </template>
+
 <script>
 export default {
     data() {
@@ -39,7 +59,6 @@ export default {
     methods: {
         getUser() {
             this.$axios.get('/api/user').then(res => {
-                console.log(res);
                 this.user.name = res.data.name;
                 this.user.email = res.data.email;
             })
@@ -49,14 +68,12 @@ export default {
             this.$axios.get('/api/profile/modelslist').then(res => {
                 this.modelsList = res.data;
 
-                for(let i = 0; i < this.modelsList.length; i++) {
+                for (let i = 0; i < this.modelsList.length; i++) {
                     if (this.modelsList[i].isSelected) {
                         this.selectedModel = i;
                         break;
                     }
                 }
-
-                console.log(this.modelsList);
             });
         },
 
@@ -79,12 +96,27 @@ export default {
     },
 }
 </script>
-<style>
-.container {
+
+<style scoped>
+.profile-info {
+    border-top: 1px solid var(--color-border);
+    border-bottom: 1px solid var(--color-border);
+}
+
+.info-row {
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-    min-height: 100vh;
-    flex-direction: column;
+    padding: var(--space-3) 0;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.btn-logout:hover {
+    color: var(--color-error);
+    border-color: var(--color-error);
 }
 </style>

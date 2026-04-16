@@ -1,22 +1,34 @@
 <template>
     <div class="page">
-        <div class="main-container">
-            <div class="main-card mb-3" v-for="result in paginatedResults" :key="result.id"
-                @click="handleClick(result.id)">
-                <h2>{{ result.userName }}</h2>
-                <p>Оценка от ИИ: {{ result.rate }}/10</p>
-                <p>Дата: {{ formatDate(result.timeEnded) }}</p>
+        <div class="container rates-container">
+            <h4 class="mb-4">Результаты прохождения</h4>
+
+            <div v-if="results.length === 0" class="text-center text-secondary-2 py-5">
+                Никто ещё не прошёл это собеседование
+            </div>
+
+            <div class="d-flex flex-column gap-3">
+                <div class="card p-4 result-card" v-for="result in paginatedResults" :key="result.id"
+                    @click="handleClick(result.id)">
+                    <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+                        <h5 class="mb-0">{{ result.userName }}</h5>
+                        <div class="d-flex gap-3 text-secondary-2 small flex-wrap">
+                            <span>Оценка: <span class="text-accent-soft">{{ result.rate }}/10</span></span>
+                            <span>{{ formatDate(result.timeEnded) }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="totalPages > 1" class="pagination-wrap">
+                <button @click="prevPage" :disabled="currentPage === 1" class="btn btn-ghost">Назад</button>
+                <span class="text-muted-custom small">Страница {{ currentPage }} из {{ totalPages }}</span>
+                <button @click="nextPage" :disabled="currentPage === totalPages" class="btn btn-ghost">Вперёд</button>
             </div>
         </div>
-
-        <div class="pagination">
-            <button @click="prevPage" :disabled="currentPage === 1">Назад</button>
-            <span>Страница {{ currentPage }} из {{ totalPages }}</span>
-            <button @click="nextPage" :disabled="currentPage === totalPages">Вперёд</button>
-        </div>
     </div>
-
 </template>
+
 <script>
 import RegisterRequire from '../../UI/RegisterRequire.vue';
 
@@ -50,9 +62,7 @@ export default {
 
     mounted() {
         this.$axios.get(`/api/retokenaize-token/${this.token}`).then(res => {
-            console.log(res.data.id)
             this.$axios.get(`/api/profile/interviews-manage/results/${res.data.id}`).then(responce => {
-                console.log(responce);
                 this.results = responce.data;
             })
         });
@@ -62,7 +72,7 @@ export default {
         handleClick(id) {
             this.$router.push({ name: 'profile.interview.manage.answers', params: { id: id } });
         },
-        
+
         prevPage() {
             if (this.currentPage > 1) {
                 this.currentPage--;
@@ -73,7 +83,7 @@ export default {
             if (this.currentPage < this.totalPages) {
                 this.currentPage++;
             }
-        }, 
+        },
 
         formatDate(dateString) {
             const date = new Date(dateString);
@@ -90,40 +100,26 @@ export default {
 </script>
 
 <style scoped>
-.main-card {
+.rates-container {
+    max-width: 900px;
+    padding: var(--space-8) var(--space-4);
+}
+
+.result-card {
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.main-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+.result-card:hover {
+    border-color: var(--color-border-strong) !important;
+    box-shadow: var(--shadow-card-hover);
 }
 
-.main-card h2 {
-    color: #ffffff;
-    margin-bottom: 10px;
-}
-
-.pagination {
+.pagination-wrap {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 15px;
-    gap: 10px;
-}
-
-.pagination button {
-    padding: 5px 10px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.pagination button:disabled {
-    background-color: #6c757d;
-    cursor: not-allowed;
+    margin-top: var(--space-8);
+    gap: var(--space-4);
 }
 </style>

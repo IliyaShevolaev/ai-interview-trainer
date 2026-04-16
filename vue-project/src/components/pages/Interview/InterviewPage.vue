@@ -1,55 +1,93 @@
 <template>
     <div class="page">
-        <div v-if="!this.inProcess" class="main-container">
-            <div class="main-card">
-                <div v-if="questions" class="btn-container">
-                    <h2 class="mb-3">{{ this.title }}</h2>
-                    <p>Contains {{ this.questions.length }} questions. Are you ready to start?</p>
-                    <button @click.prevent="startInterview" type="button" class="btn btn-outline-light">Start</button>
+        <div v-if="!inProcess" class="main-container">
+            <div class="main-card text-center">
+                <div v-if="questions">
+                    <h3 class="mb-3">{{ title }}</h3>
+                    <p class="text-secondary-2 mb-4">
+                        Содержит {{ questions.length }} {{ questionsWord }}. Готовы начать?
+                    </p>
+                    <button @click.prevent="startInterview" type="button" class="btn btn-accent">
+                        Начать
+                    </button>
                 </div>
             </div>
         </div>
 
-        <div v-else class="main-container">
-            <div class="main-card">
-                <p>{{ this.questions[this.questionId]['text'] }}</p>
-                <textarea v-if="!this.userAnswers[this.questionId]" v-model="answer" placeholder="Say something..."
-                    class="form-control" rows="4"></textarea>
-                <textarea v-else class="form-control" disabled
-                    rows="4">{{ this.userAnswers[this.questionId] }}</textarea>
+        <div v-else class="container interview-container">
+            <div class="d-flex align-items-center gap-3 mb-4">
+                <span class="text-muted-custom small" style="white-space: nowrap">
+                    Вопрос {{ questionId + 1 }} из {{ questions.length }}
+                </span>
+                <div class="progress flex-grow-1" style="height: 6px;">
+                    <div class="progress-bar" :style="{ width: progressPct + '%' }"></div>
+                </div>
+            </div>
 
-                <div class="btn-speech-container">
-                    <button @click.prevent="startRecognition" type="button" class="btn btn-outline-light">Start
-                        recording</button>
-                    <button @click.prevent="startRecognition(false)" type="button" class="btn btn-outline-light">Add
-                        record</button>
-                    <button @click.prevent="sendAnswer" v-if="!this.userAnswers[this.questionId] && !this.isAiThinking" type="button"
-                        class="btn btn-outline-light">Send answer</button>
+            <div class="card p-4 mb-3">
+                <p class="question-text mb-4">{{ questions[questionId]['text'] }}</p>
 
-                    <div class="tooltip-container" @mouseenter="showTooltip = true" @mouseleave="showTooltip = false">
-                        <button @click.prevent="bugReport" v-if="userAnswers[questionId] && !this.isAiThinking && !this.interviewFinished" type="button"
-                            class="btn btn-outline-danger">
-                            <BootstrapIcon name="bug" size="24" />
+                <textarea v-if="!userAnswers[questionId]" v-model="answer" placeholder="Ваш ответ..."
+                    class="form-control mb-3" rows="5"></textarea>
+                <textarea v-else class="form-control mb-3" disabled rows="5">{{ userAnswers[questionId] }}</textarea>
+
+                <div class="d-flex flex-wrap gap-2">
+                    <button @click.prevent="startRecognition" type="button" class="btn btn-ghost">
+                        Записать
+                    </button>
+                    <button @click.prevent="startRecognition(false)" type="button" class="btn btn-ghost">
+                        Добавить запись
+                    </button>
+                    <button @click.prevent="sendAnswer" v-if="!userAnswers[questionId] && !isAiThinking"
+                        type="button" class="btn btn-accent ms-auto">
+                        Отправить ответ
+                    </button>
+
+                    <div class="tooltip-container ms-auto"
+                        @mouseenter="showTooltip = true" @mouseleave="showTooltip = false"
+                        v-if="userAnswers[questionId] && !isAiThinking && !interviewFinished">
+                        <button @click.prevent="bugReport" type="button" class="btn btn-ghost btn-bug">
+                            <BootstrapIcon name="bug" size="18" />
                         </button>
-                        <div v-if="showTooltip" class="tooltip">Нажмите, чтобы повторно оценить ваш ответ, если считаете
-                            оценку ИИ некорректной или если она не содержит баллов в формате X/10.</div>
+                        <div v-if="showTooltip" class="custom-tooltip">
+                            Нажмите, чтобы повторно оценить ответ, если считаете оценку ИИ некорректной.
+                        </div>
                     </div>
                 </div>
 
-                <p class="mt-3" v-if="this.aiRates[this.questionId]">{{ this.aiRates[this.questionId] }}</p>
+                <div v-if="isAiThinking" class="mt-4 text-secondary-2">
+                    ИИ обдумывает ответ...
+                </div>
+
+                <div v-if="aiRates[questionId]" class="ai-rating mt-4">
+                    <div class="text-accent-soft small mb-2" style="font-weight: 600;">Оценка ИИ</div>
+                    <p class="mb-0">{{ aiRates[questionId] }}</p>
+                </div>
             </div>
 
-            <div class="nav-buttons">
-                <button @click="prevQuestion" class="btn-arrow">←</button>
-                <button @click="nextQuestion" class="btn-arrow">→</button>
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <button @click="prevQuestion" class="btn btn-ghost" :disabled="questionId === 0">
+                    ← Назад
+                </button>
+                <button @click="nextQuestion" class="btn btn-ghost"
+                    :disabled="questionId >= questions.length - 1">
+                    Вперёд →
+                </button>
             </div>
 
-            <div class="finish-button">
-                <button @click="finishInterview"
-                    v-if="this.userAnswers.length == this.questions.length && !this.interviewFinished"
-                    class="btn btn-outline-danger">Закончить собеседование</button>
-                <p v-if="this.interviewFinished" class="text-success mt-3">Собеседование завершено с рейтингом {{
-                    this.finalRate }}/10 Ваши данные успешно отправлены создателю.</p>
+            <div class="text-center mt-5" v-if="userAnswers.length == questions.length && !interviewFinished">
+                <button @click="finishInterview" class="btn btn-accent btn-lg">
+                    Завершить собеседование
+                </button>
+            </div>
+
+            <div v-if="interviewFinished" class="card p-4 mt-5 text-center finish-card">
+                <h5 class="mb-2">Собеседование завершено</h5>
+                <p class="text-secondary-2 mb-3">Итоговая оценка</p>
+                <div class="final-rate text-accent">{{ finalRate }}/10</div>
+                <p class="text-muted-custom small mt-3 mb-0">
+                    Ваши данные отправлены создателю собеседования.
+                </p>
             </div>
         </div>
     </div>
@@ -85,6 +123,19 @@ export default {
             showTooltip: false,
             isAiThinking: false,
         };
+    },
+
+    computed: {
+        progressPct() {
+            if (!this.questions) return 0;
+            return ((this.questionId + 1) / this.questions.length) * 100;
+        },
+        questionsWord() {
+            const n = this.questions.length;
+            if (n % 10 === 1 && n % 100 !== 11) return 'вопрос';
+            if ([2, 3, 4].includes(n % 10) && ![12, 13, 14].includes(n % 100)) return 'вопроса';
+            return 'вопросов';
+        },
     },
 
     mounted() {
@@ -136,8 +187,6 @@ export default {
             }).then(res => {
                 this.aiRates[this.questionId] = res.data.rate;
                 this.userAnswers[this.questionId] = this.answer
-                console.log(this.userAnswers);
-                console.log(this.aiRates);
                 this.isAiThinking = false;
             });
         },
@@ -152,7 +201,6 @@ export default {
                 console.log(res);
                 this.sendAnswer();
             });
-
         },
 
         nextQuestion() {
@@ -184,64 +232,32 @@ export default {
 </script>
 
 <style scoped>
-.form-control {
-    background-color: #333;
-    border: 1px solid #444;
-    color: #fff;
-    margin-bottom: 15px;
-    border-radius: 5px;
+.interview-container {
+    max-width: 800px;
+    padding: var(--space-8) var(--space-4);
 }
 
-.form-control:focus {
-    background-color: #444;
-    border-color: #ffffff;
-    color: #fff;
-    box-shadow: none;
+.question-text {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--color-text);
+    line-height: 1.5;
 }
 
-.form-control:disabled {
-    background-color: #444;
-    border-color: #ffffff;
-    color: #fff;
-    box-shadow: none;
+.ai-rating {
+    padding-left: var(--space-4);
+    border-left: 3px solid var(--color-accent);
+    color: var(--color-text-2);
 }
 
-.form-control::placeholder {
-    color: rgb(255, 255, 255);
-    opacity: 1;
+.btn-bug {
+    padding: 6px 10px;
+    color: var(--color-text-muted);
 }
 
-.btn-speech-container {
-    display: flex;
-    justify-content: space-around;
-}
-
-.nav-buttons {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
-    gap: 20px;
-}
-
-.btn-arrow {
-    background-color: #333;
-    border: 1px solid #555;
-    color: #fff;
-    font-size: 24px;
-    padding: 10px 15px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background 0.3s;
-}
-
-.btn-arrow:hover {
-    background-color: #555;
-}
-
-.finish-button {
-    display: flex;
-    justify-content: center;
-    margin-top: 20px;
+.btn-bug:hover {
+    color: var(--color-warning);
+    border-color: var(--color-warning);
 }
 
 .tooltip-container {
@@ -249,23 +265,27 @@ export default {
     display: inline-block;
 }
 
-.tooltip {
+.custom-tooltip {
     position: absolute;
-    bottom: 130%;
-    left: 50%;
-    transform: translateX(-50%);
-    background-color: rgba(0, 0, 0, 0.8);
-    color: white;
-    padding: 6px 10px;
-    border-radius: 6px;
-    font-size: 14px;
-    white-space: nowrap;
-    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.2);
-    opacity: 0;
-    transition: opacity 0.2s ease-in-out;
+    bottom: calc(100% + 8px);
+    right: 0;
+    background-color: var(--color-surface-2);
+    border: 1px solid var(--color-border);
+    color: var(--color-text-2);
+    padding: var(--space-2) var(--space-3);
+    border-radius: var(--radius-md);
+    font-size: 0.8rem;
+    width: 260px;
+    z-index: 10;
+    box-shadow: var(--shadow-card);
 }
 
-.tooltip-container:hover .tooltip {
-    opacity: 1;
+.finish-card {
+    border-left: 3px solid var(--color-accent);
+}
+
+.final-rate {
+    font-size: 2.5rem;
+    font-weight: 700;
 }
 </style>

@@ -1,31 +1,42 @@
 <template>
     <div class="page">
-        <div class="main-container">
-            <div v-if="!this.findCompleted" class="main-card-find mb-3">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control search-input" placeholder="Поиск..." v-model="searchQuery">
-                    <button @click.prevent="makeFindQuery" class="btn btn-outline-light " type="button">
-                        <BootstrapIcon name="search" size="24" />
-                    </button>
+        <div class="container find-container">
+            <div class="d-flex gap-2 mb-4">
+                <input type="text" class="form-control" placeholder="Поиск собеседований..."
+                    v-model="searchQuery" @keyup.enter="makeFindQuery">
+                <button @click.prevent="makeFindQuery" class="btn btn-accent search-btn" type="button">
+                    <BootstrapIcon name="search" size="18" />
+                </button>
+            </div>
+
+            <div v-if="findCompleted && interviews.length === 0" class="text-center text-secondary-2 py-5">
+                Ничего не найдено
+            </div>
+
+            <div v-if="findCompleted" class="d-flex flex-column gap-3">
+                <div class="card p-4 interview-card" v-for="interview in paginatedResults" :key="interview.id"
+                    @click="handleClick(interview.token)">
+                    <div class="d-flex justify-content-between align-items-start mb-2 flex-wrap gap-2">
+                        <h5 class="mb-0">{{ interview.title }}</h5>
+                        <span class="badge-muted">by {{ interview.username }}</span>
+                    </div>
+                    <div class="d-flex gap-3 text-secondary-2 small">
+                        <span>Вопросов: {{ interview.questionsCount }}</span>
+                        <span>Прошли: {{ interview.completedCount }}</span>
+                    </div>
                 </div>
             </div>
 
-            <div v-else class="main-card mb-3" v-for="interview in paginatedResults" :key="interview.id"
-                @click="handleClick(interview.token)">
-                <h2>
-                    {{ interview.title }} <span style="font-size: 0.5em;">by {{ interview.username }}</span>
-                </h2>
-                <p>Содержит вопросов: {{ interview.questionsCount }}. Уже прошли: {{ interview.completedCount }}.</p> 
+            <div v-if="findCompleted && totalPages > 1" class="pagination-wrap">
+                <button @click="prevPage" :disabled="currentPage === 1" class="btn btn-ghost">
+                    Назад
+                </button>
+                <span class="text-muted-custom small">Страница {{ currentPage }} из {{ totalPages }}</span>
+                <button @click="nextPage" :disabled="currentPage === totalPages" class="btn btn-ghost">
+                    Вперёд
+                </button>
             </div>
         </div>
-
-        <div v-if="this.findCompleted" class="pagination">
-            <button @click="prevPage" :disabled="currentPage === 1">Назад</button>
-            <span>Страница {{ currentPage }} из {{ totalPages }}</span>
-            <button @click="nextPage" :disabled="currentPage === totalPages">Вперёд</button>
-        </div>
-
-        <img src="../../../assets/cat.jpg" alt="AI Trainer" class="corner-image">
     </div>
 </template>
 
@@ -45,7 +56,7 @@ export default {
             findCompleted: false,
 
             currentPage: 1,
-            perPage: 3,
+            perPage: 6,
         }
     },
 
@@ -67,7 +78,6 @@ export default {
             this.$axios.post('/api/interview/find', {
                 searchQuery: this.searchQuery,
             }).then(res => {
-                console.log(res);
                 this.interviews = res.data;
             })
         },
@@ -92,82 +102,33 @@ export default {
 </script>
 
 <style scoped>
-.main-card {
+.find-container {
+    max-width: 800px;
+    padding: var(--space-8) var(--space-4);
+}
+
+.search-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 var(--space-4);
+}
+
+.interview-card {
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.main-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+.interview-card:hover {
+    border-color: var(--color-border-strong) !important;
+    box-shadow: var(--shadow-card-hover);
 }
 
-.main-card h2 {
-    color: #ffffff;
-    margin-bottom: 10px;
-}
-
-.main-card-find {
-    background-color: #1f1f1f;
-    border: none;
-    padding: 30px;
-    border-radius: 10px;
-    width: 100%;
-    max-width: 600px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.2);
-}
-
-.main-card-find p {
-    font-size: 18px;
-    color: #e0e0e0;
-}
-
-.pagination {
+.pagination-wrap {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 15px;
-    gap: 10px;
-}
-
-.pagination button {
-    padding: 5px 10px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.pagination button:disabled {
-    background-color: #6c757d;
-    cursor: not-allowed;
-}
-
-.search-input {
-    background-color: #2a2a2a;
-    border-color: #ffffff;
-    color: #ffffff;
-    outline: none;
-    border: 2px solid #444;
-}
-
-.search-input:focus {
-    background-color: #2a2a2a;
-    border-color: #ffffff;
-    color: #ffffff;
-    outline: none;
-}
-
-.search-input::placeholder {
-    color: #bbbbbb;
-}
-
-.corner-image {
-    position: absolute;
-    bottom: 10px;
-    right: 10px;
-    width: 100px;
-    height: auto;
+    margin-top: var(--space-8);
+    gap: var(--space-4);
 }
 </style>

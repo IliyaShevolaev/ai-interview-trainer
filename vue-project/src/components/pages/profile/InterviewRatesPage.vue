@@ -1,20 +1,35 @@
 <template>
     <div v-if="authCheck()" class="page">
-        <div class="main-container">
-            <div class="main-card mb-3" v-for="result in paginatedResults" :key="result.id"
-                @click="handleClick(result.id)">
-                <h2>{{ result.title }}</h2>
-                <p>Оценка от ИИ: {{ result.rate }}/10</p>
-                <p>Дата: {{ formatDate(result.timeEnded) }}</p>
+        <div class="container rates-container">
+            <h4 class="mb-4">Мои результаты</h4>
 
-                <button @click.stop="restart(result.token)" type="button" class="btn btn-outline-light">Restart <BootstrapIcon name="restart" size="24"/></button>
+            <div v-if="results.length === 0" class="text-center text-secondary-2 py-5">
+                Вы ещё не проходили собеседований
             </div>
-        </div>
 
-        <div class="pagination">
-            <button @click="prevPage" :disabled="currentPage === 1">Назад</button>
-            <span>Страница {{ currentPage }} из {{ totalPages }}</span>
-            <button @click="nextPage" :disabled="currentPage === totalPages">Вперёд</button>
+            <div class="d-flex flex-column gap-3">
+                <div class="card p-4 result-card" v-for="result in paginatedResults" :key="result.id"
+                    @click="handleClick(result.id)">
+                    <div class="d-flex justify-content-between align-items-start gap-3 flex-wrap">
+                        <div>
+                            <h5 class="mb-2">{{ result.title }}</h5>
+                            <div class="d-flex gap-3 text-secondary-2 small flex-wrap">
+                                <span>Оценка: <span class="text-accent-soft">{{ result.rate }}/10</span></span>
+                                <span>{{ formatDate(result.timeEnded) }}</span>
+                            </div>
+                        </div>
+                        <button @click.stop="restart(result.token)" type="button" class="btn btn-ghost btn-sm">
+                            <BootstrapIcon name="restart" size="16" /> Пройти ещё раз
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div v-if="totalPages > 1" class="pagination-wrap">
+                <button @click="prevPage" :disabled="currentPage === 1" class="btn btn-ghost">Назад</button>
+                <span class="text-muted-custom small">Страница {{ currentPage }} из {{ totalPages }}</span>
+                <button @click="nextPage" :disabled="currentPage === totalPages" class="btn btn-ghost">Вперёд</button>
+            </div>
         </div>
     </div>
 
@@ -32,12 +47,12 @@ export default {
         RegisterRequire,
         BootstrapIcon,
     },
-    
+
     data() {
         return {
             results: [],
             currentPage: 1,
-            perPage: 3,
+            perPage: 6,
         };
     },
 
@@ -65,7 +80,6 @@ export default {
 
         getResults() {
             this.$axios.get('/api/profile/my-results').then(res => {
-                console.log(res);
                 this.results = res.data;
             });
         },
@@ -105,40 +119,34 @@ export default {
 </script>
 
 <style scoped>
-.main-card {
+.rates-container {
+    max-width: 900px;
+    padding: var(--space-8) var(--space-4);
+}
+
+.result-card {
     cursor: pointer;
-    transition: transform 0.2s, box-shadow 0.2s;
+    transition: border-color 0.15s, box-shadow 0.15s;
 }
 
-.main-card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.3);
+.result-card:hover {
+    border-color: var(--color-border-strong) !important;
+    box-shadow: var(--shadow-card-hover);
 }
 
-.main-card h2 {
-    color: #ffffff;
-    margin-bottom: 10px;
-}
-
-.pagination {
+.pagination-wrap {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 15px;
-    gap: 10px;
+    margin-top: var(--space-8);
+    gap: var(--space-4);
 }
 
-.pagination button {
-    padding: 5px 10px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.pagination button:disabled {
-    background-color: #6c757d;
-    cursor: not-allowed;
+.btn-sm {
+    padding: 0.35rem 0.75rem;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
 }
 </style>

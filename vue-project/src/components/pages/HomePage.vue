@@ -1,35 +1,51 @@
 <template>
-    <div class="min-vh-100 custom-bg text-white d-flex flex-column align-items-center p-4 position-relative">
-        <header class="d-flex justify-content-between align-items-center py-3">
-            <h1 class="fs-3 fw-bold">AI Interview Trainer</h1>
-        </header>
-
-        <main class="d-flex flex-column align-items-center text-center mt-5">
-            <h2 class="fs-4 fw-semibold mb-3">Готовьтесь к интервью с ИИ ассистентом</h2>
-            <p class="text-secondary w-75">
-                Улучшите свои навыки прохождения интервью, тренируясь с нашим умным ассистентом на основе искусственного
-                интеллекта.
-            </p>
-
-            <button @click.prevent="start" class="btn btn-outline-success mt-4 px-4 py-2 fs-5">
-                Начать тренировку
-            </button>
-        </main>
-
-        <section class="mt-5 w-75">
-            <h3 class="fs-5 fw-medium mb-3">Почему стоит попробовать?</h3>
-            <ul class="list-unstyled text-secondary">
-                <li>🔹 Реалистичные сценарии интервью</li>
-                <li>🔹 Персонализированные рекомендации</li>
-                <li>🔹 Анализ ваших ответов</li>
-                <li>🔹 Гибкость и удобство</li>
-            </ul>
+    <div class="page home-page">
+        <section class="hero">
+            <div class="container text-center">
+                <h1 class="hero-title">Готовьтесь к интервью с ИИ ассистентом</h1>
+                <p class="hero-subtitle text-secondary-2">
+                    Улучшите свои навыки прохождения интервью, тренируясь с умным ассистентом
+                    на основе искусственного интеллекта.
+                </p>
+                <button @click.prevent="start" class="btn btn-accent btn-lg mt-2">
+                    Начать тренировку
+                </button>
+            </div>
         </section>
 
-        <footer class="text-secondary text-small position-absolute w-100 text-center bottom-0 py-2">
-            &copy; 2025 AI Interview Trainer. Все права защищены.
-        </footer>
+        <section class="features container">
+            <h2 class="section-title text-center mb-5">Почему стоит попробовать?</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="card p-4 h-100">
+                        <h5 class="mb-2">Реалистичные сценарии</h5>
+                        <p class="text-secondary-2 mb-0">Собеседования, приближённые к настоящим собеседованиям.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card p-4 h-100">
+                        <h5 class="mb-2">Персональные рекомендации</h5>
+                        <p class="text-secondary-2 mb-0">ИИ даёт развёрнутую обратную связь по каждому ответу.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card p-4 h-100">
+                        <h5 class="mb-2">Анализ ответов</h5>
+                        <p class="text-secondary-2 mb-0">Понятная оценка и разбор сильных и слабых сторон.</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="card p-4 h-100">
+                        <h5 class="mb-2">Гибкость и удобство</h5>
+                        <p class="text-secondary-2 mb-0">Тренируйтесь в любое время и в комфортном для вас темпе.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
 
+        <footer class="home-footer text-center text-muted-custom">
+            &copy; 2025 AI Interview Trainer
+        </footer>
     </div>
 </template>
 
@@ -44,15 +60,50 @@ export default {
 </script>
 
 <style scoped>
-.custom-bg {
-    background-color: #1a1a2e;
+.home-page {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    flex-direction: column;
 }
 
-.max-w-800 {
+.hero {
+    padding: var(--space-16) var(--space-4) var(--space-12);
+    display: flex;
+    justify-content: center;
+}
+
+.hero-title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: var(--space-4);
     max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
 }
 
-.text-small {
+.hero-subtitle {
+    font-size: 1.125rem;
+    max-width: 600px;
+    margin: 0 auto var(--space-8);
+    line-height: 1.6;
+}
+
+.features {
+    padding: var(--space-12) var(--space-4);
+    flex-grow: 1;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--color-text);
+}
+
+.home-footer {
+    padding: var(--space-6) var(--space-4);
     font-size: 0.875rem;
+    border-top: 1px solid var(--color-border);
+    margin-top: auto;
 }
 </style>

@@ -1,0 +1,98 @@
+// ─────────────────────────────────────────────────────────────
+// Bootstrap 5 variable overrides — loaded BEFORE bootstrap scss
+// ─────────────────────────────────────────────────────────────
+
+// Colors
+$primary:   #22c55e;
+$secondary: #2e2e2e;
+$success:   #22c55e;
+$danger:    #ef4444;
+$warning:   #f59e0b;
+$info:      #3b82f6;
+$light:     #f1f1f1;
+$dark:      #111111;
+
+// Body
+$body-bg:    #111111;
+$body-color: #f1f1f1;
+
+// Typography
+$font-family-sans-serif: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+$font-size-base:   1rem;
+$line-height-base: 1.5;
+$headings-font-weight: 600;
+$headings-color:   #f1f1f1;
+
+// Border radius
+$border-radius:      8px;
+$border-radius-sm:   6px;
+$border-radius-lg:   12px;
+$border-radius-xl:   16px;
+$border-radius-pill: 50rem;
+
+// Cards
+$card-bg:            #1a1a1a;
+$card-border-color:  #2e2e2e;
+$card-border-radius: 12px;
+$card-spacer-x:      1.5rem;
+$card-spacer-y:      1.5rem;
+$card-cap-bg:        #222222;
+
+// Inputs
+$input-bg:                  #1a1a1a;
+$input-border-color:        #2e2e2e;
+$input-color:               #f1f1f1;
+$input-focus-border-color:  #22c55e;
+$input-focus-box-shadow:    0 0 0 3px rgba(34, 197, 94, 0.15);
+$input-placeholder-color:   #71717a;
+$input-border-radius:       8px;
+
+// Buttons
+$btn-border-radius: 8px;
+$btn-font-weight:   500;
+$btn-padding-y:     0.5rem;
+$btn-padding-x:     1.25rem;
+
+// Navbar
+$navbar-padding-y:          1rem;
+$navbar-dark-color:         #a1a1aa;
+$navbar-dark-hover-color:   #f1f1f1;
+$navbar-dark-active-color:  #f1f1f1;
+$navbar-dark-brand-color:   #f1f1f1;
+
+// Dropdown
+$dropdown-bg:               #1a1a1a;
+$dropdown-border-color:     #2e2e2e;
+$dropdown-link-color:       #a1a1aa;
+$dropdown-link-hover-color: #f1f1f1;
+$dropdown-link-hover-bg:    #222222;
+
+// Tables
+$table-color:        #f1f1f1;
+$table-bg:           transparent;
+$table-border-color: #2e2e2e;
+$table-striped-bg:   #1a1a1a;
+$table-hover-bg:     #222222;
+
+// Modals
+$modal-content-bg:           #1a1a1a;
+$modal-content-border-color: #2e2e2e;
+$modal-header-border-color:  #2e2e2e;
+$modal-footer-border-color:  #2e2e2e;
+
+// Progress
+$progress-bg:           #2e2e2e;
+$progress-bar-bg:       #22c55e;
+$progress-height:       8px;
+$progress-border-radius: 50rem;
+
+// Links
+$link-color:       #22c55e;
+$link-hover-color: #4ade80;
+$link-decoration:  none;
+
+// Badges
+$badge-border-radius: 6px;
+
+// Alerts
+$alert-border-radius: 10px;

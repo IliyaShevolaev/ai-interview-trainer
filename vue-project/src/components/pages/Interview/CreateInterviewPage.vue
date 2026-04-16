@@ -2,50 +2,58 @@
     <div class="page">
         <div class="main-container">
             <div class="main-card">
+                <h4 class="mb-4">Создать собеседование</h4>
+
                 <form @submit.prevent="create">
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label for="title" class="form-label">Название</label>
-                        <input v-model="name" type="text" class="form-control" id="title" placeholder="Введите название"
-                            required>
+                        <input v-model="name" type="text" class="form-control" id="title"
+                            placeholder="Введите название" required>
                     </div>
 
-                    <div class="mb-3">
+                    <div class="mb-4">
                         <label class="form-label">Список вопросов</label>
-                        <div v-for="(question, index) in questions" :key="index" class="d-flex mb-2">
+                        <div v-for="(question, index) in questions" :key="index" class="d-flex gap-2 mb-2">
                             <input v-model="questions[index]" type="text" class="form-control"
                                 :placeholder="`Вопрос ${index + 1}`">
-                            <button type="button" class="btn btn-outline-danger ms-2" @click="removeQuestion(index)"
-                                v-if="questions.length > 1">&times;</button>
+                            <button type="button" class="btn btn-ghost btn-remove"
+                                @click="removeQuestion(index)" v-if="questions.length > 1">
+                                &times;
+                            </button>
                         </div>
-                        <button type="button" class="btn btn-outline-success" @click="addQuestion">+</button>
+                        <button type="button" class="btn btn-ghost mt-2" @click="addQuestion">
+                            + Добавить вопрос
+                        </button>
                     </div>
 
-                    <div class="form-check form-switch">
-                        <input class="form-check-input" type="checkbox" id="flexSwitchCheckDefault" v-model="isPublic">
-                        <label class="form-check-label" for="flexSwitchCheckDefault">
-                            <p>Доступ: {{ isPublic ? 'Общедоступный' : 'Только по ссылке' }}</p>
-                        </label>
+                    <div class="access-toggle mb-4">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="publicSwitch" v-model="isPublic">
+                            <label class="form-check-label text-secondary-2" for="publicSwitch">
+                                Доступ: {{ isPublic ? 'Общедоступный' : 'Только по ссылке' }}
+                            </label>
+                        </div>
                     </div>
 
-
-                    <button v-if="authCheck()" type="submit" class="btn btn-outline-primary">Create</button>
-                    <p v-else>Необходима
-                        <router-link to="/auth" type="button" class="btn btn-outline-light">
-                            регистрация
-                        </router-link>, для создания собеседования
-                    </p>
+                    <button v-if="authCheck()" type="submit" class="btn btn-accent w-100">
+                        Создать
+                    </button>
+                    <div v-else class="text-center text-secondary-2">
+                        <p class="mb-2">Необходима регистрация для создания собеседования.</p>
+                        <router-link to="/auth" class="btn btn-accent">Войти</router-link>
+                    </div>
                 </form>
             </div>
 
-            <div v-if="interviewToken" class="link-card">
-                <p>Your interview link:</p>
-                <div class="link-container">
+            <div v-if="interviewToken" class="main-card mt-3">
+                <p class="text-secondary-2 mb-2">Ссылка на собеседование</p>
+                <div class="d-flex gap-2">
                     <input type="text" :value="fullInterviewLink" class="form-control" readonly>
-                    <button @click="copyLink" class="btn btn-secondary">
-                        <BootstrapIcon name="copy" size="24" />
+                    <button @click="copyLink" class="btn btn-ghost btn-copy">
+                        <BootstrapIcon name="copy" size="18" />
                     </button>
                 </div>
-                <p v-if="copySuccess" class="copy-success">Link copied!</p>
+                <p v-if="copySuccess" class="text-accent-soft small mt-2 mb-0">Ссылка скопирована!</p>
             </div>
         </div>
     </div>
@@ -117,33 +125,23 @@ export default {
 </script>
 
 <style scoped>
-.link-card {
-    margin-top: 20px;
-    background-color: #2c2c2c;
-    padding: 15px;
-    border-radius: 8px;
-    text-align: center;
-    width: 100%;
-    max-width: 500px;
+.btn-remove {
+    padding: 0.5rem 0.85rem;
+    color: var(--color-text-muted);
 }
 
-.link-card p {
-    margin: 0 0 10px;
-    font-size: 16px;
-    color: #e0e0e0;
+.btn-remove:hover {
+    color: var(--color-error);
+    border-color: var(--color-error);
 }
 
-.link-container {
-    display: flex;
-    gap: 10px;
+.btn-copy {
+    padding: 0.5rem 0.85rem;
+    color: var(--color-text-2);
 }
 
-.link-container input {
-    flex-grow: 1;
-    background-color: #3a3a3a;
-    color: #fff;
-    border: none;
-    padding: 8px;
-    border-radius: 5px;
+.access-toggle .form-check-input:checked {
+    background-color: var(--color-accent);
+    border-color: var(--color-accent);
 }
 </style>

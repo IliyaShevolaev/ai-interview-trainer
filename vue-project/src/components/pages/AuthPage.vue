@@ -1,37 +1,46 @@
 <template>
-    <div class="auth-page">
-        <div class="container">
-            <div class="registration-box">
-                <div v-if="!isLoginMode">
-                    <div class="mb-3">
-                        <label class="form-label">Username</label>
-                        <input v-model="userData.name" type="text" class="form-control" placeholder="Enter username">
-                    </div>
+    <div class="page">
+        <div class="main-container">
+            <div class="main-card" style="max-width: 420px;">
+                <h4 class="mb-4 text-center">{{ isLoginMode ? 'Вход в аккаунт' : 'Создание аккаунта' }}</h4>
+
+                <div class="mode-switch mb-4">
+                    <button type="button" class="mode-tab" :class="{ active: isLoginMode }" @click="isLoginMode = true">
+                        Войти
+                    </button>
+                    <button type="button" class="mode-tab" :class="{ active: !isLoginMode }" @click="isLoginMode = false">
+                        Зарегистрироваться
+                    </button>
+                </div>
+
+                <div v-if="!isLoginMode" class="mb-3">
+                    <label class="form-label">Имя пользователя</label>
+                    <input v-model="userData.name" type="text" class="form-control" placeholder="Введите имя">
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Email address</label>
+                    <label class="form-label">Email</label>
                     <input v-model="userData.email" type="email" class="form-control" placeholder="name@example.com">
                 </div>
 
                 <div class="mb-3">
-                    <label class="form-label">Password</label>
-                    <input v-model="userData.password" type="password" class="form-control"
-                        placeholder="Enter password">
+                    <label class="form-label">Пароль</label>
+                    <input v-model="userData.password" type="password" class="form-control" placeholder="Введите пароль">
                 </div>
 
-                <div v-if="!isLoginMode" class="mb-1">
-                    <label class="form-label">Confirm password</label>
+                <div v-if="!isLoginMode" class="mb-4">
+                    <label class="form-label">Подтверждение пароля</label>
                     <input v-model="userData.password_confirmation" type="password" class="form-control"
-                        placeholder="Confirm your password">
+                        placeholder="Повторите пароль">
                 </div>
 
-                <button @click="toggleMode" type="button" class="btn btn-link text-white w-100 mb-1">{{ isLoginMode ? 'Create an account' : 'Already have an account?' }}</button>
+                <button @click.prevent="auth" type="button" class="btn btn-accent w-100 mb-2">
+                    {{ isLoginMode ? 'Войти' : 'Зарегистрироваться' }}
+                </button>
 
-                <button @click.prevent="auth" type="button" class="btn btn-outline-light w-100">{{ isLoginMode ? 'Login' : 'Register' }}</button>
-
-                <button @click.prevent="testUser" type="button" class="btn btn-outline-danger mt-2 w-100">Test user</button>
-
+                <button @click.prevent="testUser" type="button" class="btn btn-ghost w-100">
+                    Тестовый пользователь
+                </button>
             </div>
         </div>
     </div>
@@ -52,9 +61,6 @@ export default {
     },
 
     methods: {
-        toggleMode() {
-            this.isLoginMode = !this.isLoginMode;
-        },
         auth() {
             this.$axios.get('/sanctum/csrf-cookie').then(() => {
                 const endpoint = this.isLoginMode ? '/api/auth/login' : '/api/auth/register';
@@ -79,43 +85,31 @@ export default {
 </script>
 
 <style scoped>
-.auth-page {
-    background-color: #121212 !important;
-    color: #ffffff;
-    font-family: Arial, sans-serif;
+.mode-switch {
     display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+    gap: var(--space-2);
+    padding: var(--space-1);
+    background-color: var(--color-surface-2);
+    border-radius: var(--radius-md);
 }
 
-.container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
+.mode-tab {
+    flex: 1;
+    padding: var(--space-2) var(--space-4);
+    background-color: transparent;
+    color: var(--color-text-2);
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-weight: 500;
 }
 
-.registration-box {
-    background-color: #1e1e1e;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
-    width: 300px;
-}
-
-.form-label {
-    color: #ffffff;
-}
-
-.form-control {
-    background-color: #333;
+.mode-tab.active {
+    background-color: var(--color-accent);
     color: #fff;
-    border: 1px solid #555;
 }
 
-.form-control::placeholder {
-    color: #bbb;
+.mode-tab:not(.active):hover {
+    color: var(--color-text);
 }
 </style>

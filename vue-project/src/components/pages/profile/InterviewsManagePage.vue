@@ -1,28 +1,46 @@
 <template>
     <div v-if="authCheck()" class="page">
-        <div class="main-container">
-            <div class="main-card mb-3" v-for="result in paginatedResults" :key="result.id">
-                <h2>{{ result.title }}</h2>
-                <p>Прошли: {{ result.completedCount }}</p>
-                <p>Создано: {{ formatDate(result.created_at) }}</p>
+        <div class="container manage-container">
+            <h4 class="mb-4">Мои собеседования</h4>
 
-                <div class="btn-container">
-                    <button type="btn" class="btn btn-outline-light" @click.prevent="shareLink(result.token)">
-                        Поделиться <BootstrapIcon name="copy" size="24" />
-                    </button>
-                    <button type="btn" class="btn btn-outline-warning" @click.prevent="editInterview(result.token)">
-                        Редактировать <BootstrapIcon name="edit" size="24" />
-                    </button>
-                    <button type="btn" class="btn btn-outline-success"
-                        @click.prevent="goToResults(result.token)">Результаты <BootstrapIcon name="result-list" size="24" /></button>
+            <div v-if="results.length === 0" class="text-center text-secondary-2 py-5">
+                Вы ещё не создавали собеседований
+            </div>
+
+            <div class="d-flex flex-column gap-3">
+                <div class="card p-4" v-for="result in paginatedResults" :key="result.id">
+                    <div class="d-flex justify-content-between align-items-start flex-wrap gap-3 mb-3">
+                        <div>
+                            <h5 class="mb-2">{{ result.title }}</h5>
+                            <div class="d-flex gap-3 text-secondary-2 small flex-wrap">
+                                <span>Прошли: {{ result.completedCount }}</span>
+                                <span>Создано: {{ formatDate(result.created_at) }}</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="d-flex gap-2 flex-wrap">
+                        <button type="button" class="btn btn-ghost btn-sm"
+                            @click.prevent="shareLink(result.token)">
+                            <BootstrapIcon name="copy" size="16" /> Поделиться
+                        </button>
+                        <button type="button" class="btn btn-ghost btn-sm"
+                            @click.prevent="editInterview(result.token)">
+                            <BootstrapIcon name="edit" size="16" /> Редактировать
+                        </button>
+                        <button type="button" class="btn btn-accent btn-sm"
+                            @click.prevent="goToResults(result.token)">
+                            <BootstrapIcon name="result-list" size="16" /> Результаты
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
 
-        <div class="pagination">
-            <button @click="prevPage" :disabled="currentPage === 1">Назад</button>
-            <span>Страница {{ currentPage }} из {{ totalPages }}</span>
-            <button @click="nextPage" :disabled="currentPage === totalPages">Вперёд</button>
+            <div v-if="totalPages > 1" class="pagination-wrap">
+                <button @click="prevPage" :disabled="currentPage === 1" class="btn btn-ghost">Назад</button>
+                <span class="text-muted-custom small">Страница {{ currentPage }} из {{ totalPages }}</span>
+                <button @click="nextPage" :disabled="currentPage === totalPages" class="btn btn-ghost">Вперёд</button>
+            </div>
         </div>
     </div>
 
@@ -46,7 +64,7 @@ export default {
         return {
             results: [],
             currentPage: 1,
-            perPage: 3,
+            perPage: 6,
         };
     },
 
@@ -74,7 +92,6 @@ export default {
 
         getResults() {
             this.$axios.get('/api/profile/interviews-manage').then(res => {
-                console.log(res);
                 this.results = res.data;
             });
         },
@@ -122,30 +139,24 @@ export default {
 </script>
 
 <style scoped>
-.pagination {
+.manage-container {
+    max-width: 900px;
+    padding: var(--space-8) var(--space-4);
+}
+
+.pagination-wrap {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 15px;
-    gap: 10px;
+    margin-top: var(--space-8);
+    gap: var(--space-4);
 }
 
-.pagination button {
-    padding: 5px 10px;
-    border: none;
-    background-color: #007bff;
-    color: white;
-    cursor: pointer;
-    border-radius: 5px;
-}
-
-.pagination button:disabled {
-    background-color: #6c757d;
-    cursor: not-allowed;
-}
-
-.btn-container {
-    display: flex;
-    justify-content: space-around;
+.btn-sm {
+    padding: 0.4rem 0.85rem;
+    font-size: 0.85rem;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
 }
 </style>

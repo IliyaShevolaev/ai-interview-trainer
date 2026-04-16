@@ -1,0 +1,306 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;1,14..32,400&display=swap');
+
+@import 'variables';
+@import 'bootstrap/scss/bootstrap';
+
+// ─────────────────────────────────────────────────────────────
+// Design tokens — CSS custom properties for component use
+// ─────────────────────────────────────────────────────────────
+
+:root {
+  // Backgrounds
+  --color-bg:           #111111;
+  --color-surface:      #1a1a1a;
+  --color-surface-2:    #222222;
+
+  // Borders
+  --color-border:       #2e2e2e;
+  --color-border-strong: #444444;
+
+  // Accent (green)
+  --color-accent:       #22c55e;
+  --color-accent-hover: #16a34a;
+  --color-accent-muted: #14532d;
+  --color-accent-text:  #4ade80;
+
+  // Text
+  --color-text:         #f1f1f1;
+  --color-text-2:       #a1a1aa;
+  --color-text-muted:   #71717a;
+
+  // Semantic
+  --color-error:        #ef4444;
+  --color-warning:      #f59e0b;
+
+  // Radius
+  --radius-sm:  6px;
+  --radius-md:  8px;
+  --radius-lg:  12px;
+  --radius-xl:  16px;
+
+  // Shadows
+  --shadow-card:       0 2px 8px rgba(0, 0, 0, 0.4);
+  --shadow-card-hover: 0 4px 16px rgba(0, 0, 0, 0.5);
+
+  // Spacing (4px grid)
+  --space-1:  4px;
+  --space-2:  8px;
+  --space-3:  12px;
+  --space-4:  16px;
+  --space-5:  20px;
+  --space-6:  24px;
+  --space-8:  32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+}
+
+// ─────────────────────────────────────────────────────────────
+// Global resets
+// ─────────────────────────────────────────────────────────────
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html, body, #app {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  font-family: 'Inter', system-ui, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+hr { border-color: var(--color-border); opacity: 1; }
+
+// ─────────────────────────────────────────────────────────────
+// Layout helpers
+// ─────────────────────────────────────────────────────────────
+
+.page {
+  min-height: 100vh;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
+.main-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 64px);
+  flex-direction: column;
+  padding: var(--space-6);
+}
+
+.main-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  width: 100%;
+  max-width: 600px;
+  box-shadow: var(--shadow-card);
+}
+
+// ─────────────────────────────────────────────────────────────
+// Typography utilities
+// ─────────────────────────────────────────────────────────────
+
+.text-accent         { color: var(--color-accent); }
+.text-accent-soft    { color: var(--color-accent-text); }
+.text-secondary-2    { color: var(--color-text-2); }
+.text-muted-custom   { color: var(--color-text-muted); }
+
+// ─────────────────────────────────────────────────────────────
+// Buttons
+// ─────────────────────────────────────────────────────────────
+
+.btn-accent {
+  background-color: var(--color-accent);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+
+  &:hover, &:focus {
+    background-color: var(--color-accent-hover);
+    color: #fff;
+  }
+
+  &:disabled {
+    background-color: var(--color-accent-muted);
+    color: var(--color-text-muted);
+    cursor: not-allowed;
+  }
+}
+
+.btn-ghost {
+  background-color: transparent;
+  color: var(--color-text-2);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-weight: 500;
+  padding: 0.5rem 1.25rem;
+
+  &:hover {
+    border-color: var(--color-border-strong);
+    color: var(--color-text);
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Cards (Bootstrap .card override)
+// ─────────────────────────────────────────────────────────────
+
+.card {
+  background-color: var(--color-surface) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-lg) !important;
+  box-shadow: var(--shadow-card);
+  color: var(--color-text);
+}
+
+.card-header,
+.card-footer {
+  background-color: var(--color-surface-2) !important;
+  border-color: var(--color-border) !important;
+}
+
+// ─────────────────────────────────────────────────────────────
+// Form controls
+// ─────────────────────────────────────────────────────────────
+
+.form-control,
+.form-select {
+  background-color: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+  color: var(--color-text) !important;
+
+  &:focus {
+    background-color: var(--color-surface) !important;
+    border-color: var(--color-accent) !important;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.15) !important;
+    color: var(--color-text) !important;
+  }
+
+  &::placeholder {
+    color: var(--color-text-muted) !important;
+  }
+}
+
+.form-label {
+  color: var(--color-text-2);
+  font-size: 0.875rem;
+  margin-bottom: var(--space-1);
+}
+
+// ─────────────────────────────────────────────────────────────
+// Navbar
+// ─────────────────────────────────────────────────────────────
+
+.navbar {
+  background-color: var(--color-surface) !important;
+  border-bottom: 1px solid var(--color-border);
+  height: 64px;
+
+  .navbar-brand {
+    font-weight: 600;
+    color: var(--color-text) !important;
+    font-size: 1rem;
+  }
+
+  .nav-link {
+    color: var(--color-text-2) !important;
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: color 0.15s;
+
+    &:hover,
+    &.router-link-active {
+      color: var(--color-text) !important;
+    }
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Dropdown
+// ─────────────────────────────────────────────────────────────
+
+.dropdown-menu {
+  background-color: var(--color-surface) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-card);
+  padding: var(--space-1) 0;
+}
+
+.dropdown-item {
+  color: var(--color-text-2) !important;
+  font-size: 0.9rem;
+  padding: var(--space-2) var(--space-4);
+
+  &:hover {
+    background-color: var(--color-surface-2) !important;
+    color: var(--color-text) !important;
+  }
+}
+
+// ─────────────────────────────────────────────────────────────
+// Progress
+// ─────────────────────────────────────────────────────────────
+
+.progress {
+  background-color: var(--color-surface-2);
+  border-radius: 50rem;
+}
+
+.progress-bar {
+  background-color: var(--color-accent);
+  border-radius: 50rem;
+}
+
+// ─────────────────────────────────────────────────────────────
+// Badge / status label
+// ─────────────────────────────────────────────────────────────
+
+.badge-accent {
+  display: inline-block;
+  background-color: var(--color-accent-muted);
+  color: var(--color-accent-text);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.2rem 0.5rem;
+  line-height: 1.4;
+}
+
+.badge-muted {
+  display: inline-block;
+  background-color: var(--color-surface-2);
+  color: var(--color-text-muted);
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 500;
+  padding: 0.2rem 0.5rem;
+  line-height: 1.4;
+}
+
+// ─────────────────────────────────────────────────────────────
+// Alerts
+// ─────────────────────────────────────────────────────────────
+
+.alert {
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+}
+
+.alert-danger {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  border-color: rgba(239, 68, 68, 0.3) !important;
+  color: #fca5a5 !important;
+}
+
+.alert-success {
+  background-color: var(--color-accent-muted) !important;
+  border-color: rgba(34, 197, 94, 0.3) !important;
+  color: var(--color-accent-text) !important;
+}
