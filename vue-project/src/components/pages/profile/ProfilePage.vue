@@ -1,38 +1,58 @@
 <template>
     <div class="page">
-        <div class="main-container">
-            <div class="main-card">
-                <h4 class="mb-4">Профиль</h4>
+        <div class="container profile-container">
+            <section class="profile-hero">
+                <div class="hero-avatar">{{ initial }}</div>
+                <h2 class="hero-name">{{ user.name || '—' }}</h2>
+                <p class="hero-email text-muted-custom">{{ user.email }}</p>
+            </section>
 
-                <div class="profile-info mb-4">
-                    <div class="info-row">
-                        <span class="text-muted-custom small">Имя</span>
-                        <span>{{ user.name }}</span>
-                    </div>
-                    <div class="info-row">
-                        <span class="text-muted-custom small">Email</span>
-                        <span>{{ user.email }}</span>
-                    </div>
+            <section class="mb-4">
+                <div class="section-head">
+                    <h6 class="section-title">Модель ИИ</h6>
+                    <p class="section-sub text-secondary-2">
+                        Выберите модель, которая будет оценивать ваши ответы.
+                    </p>
                 </div>
 
-                <div class="mb-4">
-                    <label for="modelSelect" class="form-label">Выберите модель ИИ</label>
-                    <select v-model="selectedModel" class="form-select" id="modelSelect">
+                <div class="card p-4">
+                    <label for="modelSelect" class="form-label">Активная модель</label>
+                    <select v-model="selectedModel" class="form-select mb-3" id="modelSelect">
                         <option v-for="(value, key) in modelsList" :key="key" :value="key">
                             {{ value.name }}
                         </option>
                     </select>
+
+                    <div class="d-flex justify-content-end">
+                        <button @click.prevent="selectNewModel" type="button" class="btn btn-accent"
+                            :disabled="savingModel">
+                            {{ savingModel ? 'Сохранение…' : 'Сохранить' }}
+                        </button>
+                    </div>
+                    <p v-if="saveSuccess" class="text-accent-soft small mt-2 mb-0">Модель сохранена</p>
+                </div>
+            </section>
+
+            <section>
+                <div class="section-head">
+                    <h6 class="section-title">Аккаунт</h6>
+                    <p class="section-sub text-secondary-2">
+                        Управление сессией.
+                    </p>
                 </div>
 
-                <div class="d-flex gap-2 flex-wrap">
-                    <button @click.prevent="selectNewModel" type="button" class="btn btn-accent">
-                        Сохранить модель
-                    </button>
-                    <button @click.prevent="logout" type="button" class="btn btn-ghost btn-logout">
-                        Выход
-                    </button>
+                <div class="card p-4">
+                    <div class="d-flex justify-content-between align-items-center gap-3 flex-wrap">
+                        <div>
+                            <div style="font-weight: 500;">Выход из аккаунта</div>
+                            <div class="text-muted-custom small">Вы будете перенаправлены на страницу входа.</div>
+                        </div>
+                        <button @click.prevent="logout" type="button" class="btn btn-ghost btn-logout">
+                            Выйти
+                        </button>
+                    </div>
                 </div>
-            </div>
+            </section>
         </div>
     </div>
 </template>
@@ -43,12 +63,21 @@ export default {
         return {
             modelsList: [],
             selectedModel: null,
+            savingModel: false,
+            saveSuccess: false,
 
             user: {
                 name: null,
                 email: null
             }
         }
+    },
+
+    computed: {
+        initial() {
+            const source = this.user.name || this.user.email || '?';
+            return source.charAt(0).toUpperCase();
+        },
     },
 
     mounted() {
@@ -78,10 +107,14 @@ export default {
         },
 
         selectNewModel() {
+            this.savingModel = true;
+            this.saveSuccess = false;
             this.$axios.post('/api/profile/setmodel', {
                 'newModelName': this.modelsList[this.selectedModel].name,
-            }).then(res => {
-                console.log(res);
+            }).then(() => {
+                this.savingModel = false;
+                this.saveSuccess = true;
+                setTimeout(() => this.saveSuccess = false, 2000);
             });
         },
 
@@ -98,21 +131,60 @@ export default {
 </script>
 
 <style scoped>
-.profile-info {
-    border-top: 1px solid var(--color-border);
-    border-bottom: 1px solid var(--color-border);
+.profile-container {
+    max-width: 640px;
+    padding: var(--space-10) var(--space-4) var(--space-12);
 }
 
-.info-row {
-    display: flex;
-    justify-content: space-between;
+.profile-hero {
+    text-align: center;
+    padding: var(--space-6) 0 var(--space-10);
+}
+
+.hero-avatar {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background-color: var(--color-accent);
+    color: #fff;
+    display: inline-flex;
     align-items: center;
-    padding: var(--space-3) 0;
-    border-bottom: 1px solid var(--color-border);
+    justify-content: center;
+    font-size: 2.25rem;
+    font-weight: 600;
+    margin-bottom: var(--space-4);
+    line-height: 1;
 }
 
-.info-row:last-child {
-    border-bottom: none;
+.hero-name {
+    font-size: 1.5rem;
+    font-weight: 600;
+    margin-bottom: var(--space-1);
+    color: var(--color-text);
+}
+
+.hero-email {
+    font-size: 0.9rem;
+    margin-bottom: 0;
+}
+
+.section-head {
+    margin-bottom: var(--space-3);
+    padding-left: var(--space-1);
+}
+
+.section-title {
+    font-size: 0.8rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--color-text-muted);
+    margin-bottom: var(--space-1);
+}
+
+.section-sub {
+    font-size: 0.85rem;
+    margin-bottom: 0;
 }
 
 .btn-logout:hover {
