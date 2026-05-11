@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\API\Interview;
 
 use App\Models\Interview\Interview;
-use Illuminate\Support\Facades\Log;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Interview\RateRequest;
 use App\Http\Requests\Interview\CreateRequest;
@@ -12,10 +11,13 @@ use App\Services\Openrouter\OpenrouterService;
 use App\Actions\Interview\StoreInterviewAction;
 use App\Actions\Interview\FinishInterviewAction;
 use App\Actions\Interview\UpdateInterviewAction;
+use App\Http\Requests\Interview\GenerateQuestionsRequest;
 use App\Actions\Interview\RateInterviewAnswerAction;
+use App\Actions\Interview\GenerateInterviewQuestionsAction;
 use App\Http\Requests\Interview\FindRequest;
 use App\Http\Requests\Interview\UpdateRequest;
 use App\Http\Resources\Interview\InterviewResource;
+use RuntimeException;
 
 class InterviewController extends Controller
 {
@@ -79,5 +81,25 @@ class InterviewController extends Controller
         $interviews = Interview::whereRaw('LOWER(title) LIKE ?', ['%' . strtolower($data['searchQuery']) . '%'])->where('is_public', true)->get();
 
         return InterviewResource::collection($interviews);
+    }
+
+    public function generateQuestions(
+        GenerateQuestionsRequest $generateQuestionsRequest,
+        GenerateInterviewQuestionsAction $generateInterviewQuestionsAction,
+        OpenrouterService $openrouterService
+    ) {
+        $data = $generateQuestionsRequest->validated();
+
+        try {
+            $questions = $generateInterviewQuestionsAction->handle($openrouterService, $data);
+        } catch (RuntimeException $exception) {
+            return response()->json([
+                'message' => $exception->getMessage(),
+            ], 422);
+        }
+
+        return response()->json([
+            'questions' => $questions,
+        ], 200);
     }
 }

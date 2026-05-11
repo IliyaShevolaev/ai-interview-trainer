@@ -42,10 +42,6 @@
                 </div>
             </div>
         </section>
-
-        <footer class="home-footer text-center text-muted-custom">
-            &copy; 2025 AI Interview Trainer
-        </footer>
     </div>
 </template>
 
