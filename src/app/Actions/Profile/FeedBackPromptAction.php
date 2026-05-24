@@ -9,7 +9,10 @@ class FeedBackPromptAction
 {
     public function handle(OpenrouterService $openrouterService, Answer $answer)
     {
-        $prompt = 'Ты опытный IT-ментор. Твой ученик только что ответил на вопрос: "' . $answer->question->text . '" вот так: "' . $answer->answer . '". Объясни ему, как улучшить ответ, чтобы он был правильным и полным. Используй дружелюбный тон, обращайся к ученику на "ты", давай четкие рекомендации и примеры.';
+        $prompt = strtr(config('aiprompts.profile.feedback'), [
+            ':question' => (string) $answer->question->text,
+            ':answer' => (string) $answer->answer,
+        ]);
 
         $aiFeedback = $openrouterService->sendAiRequest($prompt);
 
